@@ -8,16 +8,24 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 horizontalVelocity;
     private CharacterController characterController;
+    
+    private Animator _animator;
 
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
+        _animator  = GetComponent<Animator>();
     }
     private void Update()
     {
         UpdateHorizontalVelocity();
 
         ApplyTotalVelocity();
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            _animator.SetTrigger("Interact");
+        }
     }
 
 
@@ -32,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
         horizontal = new Vector3(horizontal.x * speed, 0, horizontal.z * speed);
 
         horizontalVelocity = horizontal;
+
+        _animator.SetFloat("xVelocity", xInput, 0.1f, Time.deltaTime);
+        _animator.SetFloat("yVelocity", yInput, 0.1f, Time.deltaTime);
     }
 
 
