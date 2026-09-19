@@ -4,12 +4,16 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Variables")]
     [SerializeField] public float speed;
-
-    private Vector3 horizontalVelocity;
-    private CharacterController characterController;
+    [SerializeField] private float rotationSpeed = 360f;
     
+    private Vector3 input;
+    private Vector3 velocity;
+    private CharacterController characterController;
     private Animator _animator;
+    
+    private bool isCrouching = false;
 
     private void Start()
     {
@@ -18,38 +22,67 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
-        UpdateHorizontalVelocity();
-
+        UpdateVelocity();
+        Look();
         ApplyTotalVelocity();
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            isCrouching = !isCrouching;
+            _animator.SetBool("isCrouching", isCrouching);
+
+            if (isCrouching)
+            {
+                Crouch();
+            }
+            else
+            {
+                GetUp();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && !isCrouching)
         {
             _animator.SetTrigger("Interact");
         }
     }
 
 
-    private void UpdateHorizontalVelocity()
+    private void UpdateVelocity()
     {
-        float xInput = Input.GetAxisRaw("Horizontal");
-        float yInput = Input.GetAxisRaw("Vertical"); 
+        float forwardInput = Input.GetAxisRaw("Vertical");
+        
+        velocity = transform.forward * forwardInput;
 
-        Vector3 horizontal = xInput * transform.right + yInput * transform.forward;
-        if (horizontal.magnitude > 1) horizontal.Normalize();
-
-        horizontal = new Vector3(horizontal.x * speed, 0, horizontal.z * speed);
-
-        horizontalVelocity = horizontal;
-
-        _animator.SetFloat("xVelocity", xInput, 0.1f, Time.deltaTime);
-        _animator.SetFloat("yVelocity", yInput, 0.1f, Time.deltaTime);
+        _animator.SetFloat("yVelocity", forwardInput, 0.1f, Time.deltaTime);
     }
-
-
+    
     private void ApplyTotalVelocity()
     {
-        var totalMove = horizontalVelocity;
+        characterController.Move(velocity * speed * Time.deltaTime);
+    }
 
-        characterController.Move(totalMove * Time.deltaTime);
+    private void Look()
+    {
+        float rotationInput = Input.GetAxisRaw("Horizontal");
+        
+        if (rotationInput == 0) return;
+
+        float rotation = rotationInput * rotationSpeed * Time.deltaTime;
+
+        transform.Rotate(0f, rotation, 0f);
+
+    }
+
+    private void Crouch()
+    {
+        characterController.height = 1f;
+        speed = speed / 2f;
+    }
+
+    private void GetUp()
+    {
+        characterController.height = 2f;
+        speed = speed * 2f;
     }
 }
