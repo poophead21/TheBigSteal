@@ -5,8 +5,9 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Variables")]
-    [SerializeField] public float speed;
+    [SerializeField] public float speed = 5f;
     [SerializeField] private float rotationSpeed = 360f;
+    [SerializeField] private Transform cameraTransform;
     
     private Vector3 input;
     private Vector3 velocity;
@@ -16,7 +17,6 @@ public class PlayerMovement : MonoBehaviour
     public bool isCrouching = false;
     public bool isRunning = false;
     
-    private bool isTurned = false; 
     private Vector3 sideVelocity;
     private Vector3 forwardVelocity;
 
@@ -28,11 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         UpdateVelocity();
-
-        RotatePlayer();
-
-        ApplyTotalVelocity();
-
+        
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             isCrouching = !isCrouching;
@@ -72,61 +68,33 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateVelocity()
     {
-        float forwardInput = Input.GetAxisRaw("Vertical");
-        float sideInput = Input.GetAxisRaw("Horizontal");
+        float horizontalInput  = Input.GetAxisRaw("Horizontal");
+        float verticalInput  = Input.GetAxisRaw("Vertical");
         
-       Vector3 movement = new Vector3(sideInput, 0, forwardInput);
-        /*Quaternion rotation = Quaternion.LookRotation(movement);
-        transform.rotation = rotation;*/
-        if (movement != Vector3.zero)
-        {
-           Quaternion targetRotation = Quaternion.LookRotation(movement);
-           transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
+        Vector3 cameraForward = cameraTransform.forward;
+        Vector3 cameraRight = cameraTransform.right;
         
-        if (forwardInput < 0)
-        {
-            forwardInput *= -1f;
-        }
-        else if (sideInput < 0)
-        {
-            sideInput *= -1f;
-        }
-
-        if (forwardInput != 0 && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
-        {
-            sideInput = 0;
-            _animator.SetFloat("Velocity", forwardInput, 0.1f, Time.deltaTime);
-        }
-        else if (sideInput != 0 && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)))
-        {
-            forwardInput = 0;
-            _animator.SetFloat("Velocity", sideInput, 0.1f, Time.deltaTime);
-        }
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
         
-        velocity = forwardInput * transform.forward + sideInput * transform.forward;
-    }
-    
-    private void ApplyTotalVelocity()
-    {
-        characterController.Move(velocity * speed * Time.deltaTime);
-    }
-
-    private void RotatePlayer()
-    {
+        cameraForward.Normalize();
+        cameraRight.Normalize();
         
-    }
+        Vector3 movementDirection = cameraForward * verticalInput + cameraRight * horizontalInput;
 
-    private void Look()
-    {
-        /*float rotationInput = Input.GetAxisRaw("Horizontal");
+        if (movementDirection.sqrMagnitude < 0.01f) return;
+        movementDirection.Normalize();
         
-        if (rotationInput == 0) return;
+        Quaternion targetRotation = Quaternion.LookRotation(movementDirection);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        
+        Vector3 movement = transform.forward * speed;
 
-        float rotation = rotationInput * rotationSpeed * Time.deltaTime;
-
-        transform.Rotate(0f, rotation, 0f);*/
-
+        /*float animationVelocity = movement.magnitude;
+        _animator.SetFloat("Velocity", Mathf.Clamp01(animationVelocity), 0.1f, Time.deltaTime);
+        Debug.Log(animationVelocity);*/
+        
+        characterController.Move(movement * Time.deltaTime);
     }
 
     private void Crouch()

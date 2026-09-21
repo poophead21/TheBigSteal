@@ -1460,6 +1460,10 @@ PrefabInstance:
       propertyPath: rotationSpeed
       value: 360
       objectReference: {fileID: 0}
+    - target: {fileID: 8463026371096147245, guid: b0a1ed90df5451245aedf8afba1b9630, type: 3}
+      propertyPath: cameraTransform
+      value: 
+      objectReference: {fileID: 390335612}
     m_RemovedComponents:
     - {fileID: 6960989286859719696, guid: b0a1ed90df5451245aedf8afba1b9630, type: 3}
     - {fileID: 3418062541748536992, guid: b0a1ed90df5451245aedf8afba1b9630, type: 3}
