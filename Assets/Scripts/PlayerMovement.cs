@@ -13,7 +13,8 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
     private Animator _animator;
     
-    private bool isCrouching = false;
+    public bool isCrouching = false;
+    public bool isRunning = false;
 
     private void Start()
     {
