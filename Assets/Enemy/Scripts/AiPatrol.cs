@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.AI;
 
-public class AIPatrol : AiBase
+public class AiPatrol : AiBase
 {
     [SerializeField] private Transform[] patrolPoint;
 
@@ -10,25 +9,21 @@ public class AIPatrol : AiBase
     protected override void Awake()
     {
         base.Awake();
+        _navMeshAgent.updateRotation = true;
+        _navMeshAgent.isStopped = false;
         GoToNextPoint();
     }
 
     private void Update()
     {
-        if (agent.remainingDistance < agent.stoppingDistance && !agent.pathPending)
+        if (_navMeshAgent.remainingDistance < _navMeshAgent.stoppingDistance && !_navMeshAgent.pathPending)
             GoToNextPoint();
     }
 
     private void GoToNextPoint()
     {
         if (_currentPatrolPointIndex >= patrolPoint.Length) _currentPatrolPointIndex = 0;
-        agent.SetDestination(patrolPoint[_currentPatrolPointIndex++].position);
+        _navMeshAgent.SetDestination(patrolPoint[_currentPatrolPointIndex++].position);
     }
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        //Do something when this state si entered
-        Debug.Log("Entered Patrol State");
-    }
+    
 }

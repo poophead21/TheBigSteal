@@ -1,25 +1,23 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent), typeof(EnemyBehaviour))]
 public class AiBase : MonoBehaviour
 {
-    protected EnemyBehaviour enemyBehaviour;
-    protected NavMeshAgent agent;
+    protected EnemyBehaviour _enemyBehaviour;
+    protected NavMeshAgent _navMeshAgent;
     [SerializeField] protected float breakingDistance;
 
     protected virtual void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        enemyBehaviour = GetComponent<EnemyBehaviour>();
-        agent.stoppingDistance = breakingDistance;
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        _enemyBehaviour = GetComponent<EnemyBehaviour>();
+        _navMeshAgent.stoppingDistance = breakingDistance;
     }
 
     protected virtual void OnEnable()
     {
-        agent.ResetPath();
-        agent.stoppingDistance = breakingDistance;
-        agent.speed = enemyBehaviour.speed;
+        _navMeshAgent.ResetPath();
+        _navMeshAgent.stoppingDistance = breakingDistance;
+        _navMeshAgent.speed = _enemyBehaviour.speed;
     }
 }
