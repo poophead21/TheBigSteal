@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     private Animator _animator;
     
     public bool isCrouching = false;
+    public bool isPushing = false;
+    public bool isRotating = false;
     public bool isRunning = false;
     
     private Vector3 sideVelocity;
