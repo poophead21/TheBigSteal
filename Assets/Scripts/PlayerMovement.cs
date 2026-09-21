@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator _animator;
     
     private bool isCrouching = false;
+    public bool isInteracting = false;
 
     private void Start()
     {
@@ -44,6 +45,12 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && !isCrouching)
         {
             _animator.SetTrigger("Interact");
+            isInteracting = true;
+        }
+
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            isInteracting = false;
         }
     }
 
