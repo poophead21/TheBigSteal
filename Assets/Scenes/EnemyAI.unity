@@ -2334,7 +2334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicManager
   chaseMusicClip: {fileID: 8300000, guid: 248c9935b7e56d54196ab6d208d13a9e, type: 3}
-  fadeDuration: 2
+  fadeDuration: 4
   maxVolume: 0.406
 --- !u!82 &1550263548
 AudioSource:
