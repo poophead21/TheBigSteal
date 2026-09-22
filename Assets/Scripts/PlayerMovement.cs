@@ -100,6 +100,9 @@ public class PlayerMovement : MonoBehaviour
         cameraRight.Normalize();
         
         Vector3 movementDirection = cameraForward * verticalInput + cameraRight * horizontalInput;
+        
+        float movementAnimation  = Mathf.Clamp01(movementDirection.magnitude);
+        _animator.SetFloat("Velocity", movementAnimation, 0.1f, Time.deltaTime);
 
         if (movementDirection.sqrMagnitude < 0.01f) return;
         movementDirection.Normalize();
@@ -110,11 +113,6 @@ public class PlayerMovement : MonoBehaviour
         //Vector3 movement = transform.forward * speed;
         Vector3 movement = movementDirection * speed;
 
-        float movementAnimation  = movementDirection.magnitude;
-        /*float animationVelocity = movement.magnitude;
-        _animator.SetFloat("Velocity", Mathf.Clamp01(animationVelocity), 0.1f, Time.deltaTime);
-        Debug.Log(animationVelocity);*/
-        _animator.SetFloat("Velocity", movementAnimation, 0.1f, Time.deltaTime);
         
         characterController.Move(movement * Time.deltaTime);
     }
