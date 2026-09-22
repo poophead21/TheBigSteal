@@ -4,6 +4,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(EnemyPatrol))]
 [RequireComponent(typeof(FieldOfView))]
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(AudioSource))]
 public class EnemyController : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -20,8 +21,30 @@ public class EnemyController : MonoBehaviour
     [Header("Rotation Settings")]
     [SerializeField] private float turnSpeed = 8f;
 
+    [Header("UI Visual Indicators")]
+    [Tooltip("Question mark icon placed above enemy's head.")]
+    [SerializeField] private GameObject questionMarkIcon;
+
+    [Tooltip("Exclamation mark icon placed above enemy's head when chase triggers.")]
+    [SerializeField] private GameObject exclamationMarkIcon;
+
+    [Tooltip("How long (in seconds) the question mark stays visible after spotting the player, even if line of sight is broken.")]
+    [SerializeField] private float questionMarkDuration = 1.5f;
+
+    [Tooltip("How long (in seconds) the exclamation mark stays visible when chase begins.")]
+    [SerializeField] private float exclamationMarkDuration = 2.0f;
+
     [Header("Animation Reference")]
     [SerializeField] private Animator anim;
+
+    [Header("Audio Sources & Clips")]
+    [SerializeField] private AudioSource footstepAudioSource;
+    [SerializeField] private AudioSource sfxAudioSource;
+
+    [Space(5)]
+    [SerializeField] private AudioClip footstepClip;
+    [SerializeField] private AudioClip alertSoundClip;
+    [SerializeField] private AudioClip chaseSoundClip;
 
     private EnemyPatrol patrolScript;
     private FieldOfView fovScript;
@@ -30,6 +53,12 @@ public class EnemyController : MonoBehaviour
     private Vector3 lastKnownPosition;
     private bool hasLastKnownPos = false;
     private float investigationTimer = 0f;
+    private float questionMarkTimer = 0f;
+    private float exclamationMarkTimer = 0f;
+
+    private bool playedAlertSound = false;
+    private bool playedChaseSound = false;
+    private bool isCurrentlyChasing = false;
 
     private void Awake()
     {
@@ -37,9 +66,35 @@ public class EnemyController : MonoBehaviour
         fovScript = GetComponent<FieldOfView>();
         agent = GetComponent<NavMeshAgent>();
 
-        // Auto-assign Animator from children if not set manually in Inspector
         if (anim == null)
             anim = GetComponentInChildren<Animator>();
+
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        if (footstepAudioSource == null && audioSources.Length > 0)
+            footstepAudioSource = audioSources[0];
+
+        if (sfxAudioSource == null)
+        {
+            if (audioSources.Length > 1)
+                sfxAudioSource = audioSources[1];
+            else
+                sfxAudioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        if (footstepClip != null && footstepAudioSource != null)
+        {
+            footstepAudioSource.clip = footstepClip;
+            footstepAudioSource.loop = true;
+        }
+
+        if (sfxAudioSource != null)
+        {
+            sfxAudioSource.spatialBlend = 1.0f; // Full 3D spatial sound
+            sfxAudioSource.playOnAwake = false;
+        }
+
+        SetIconActive(questionMarkIcon, false);
+        SetIconActive(exclamationMarkIcon, false);
     }
 
     private void Update()
@@ -48,26 +103,49 @@ public class EnemyController : MonoBehaviour
         if (fovScript.canSeePlayer && fovScript.playerRef != null)
         {
             patrolScript.enabled = false;
-
-            // Reset timers while player is actively seen
             investigationTimer = 0f;
 
-            // Store last known position
+            // Trigger Alert Sound ONCE when line of sight is gained
+            if (!playedAlertSound)
+            {
+                PlaySFX(alertSoundClip);
+                playedAlertSound = true;
+
+                // Start Question Mark timer (will run out independently of sight)
+                questionMarkTimer = questionMarkDuration;
+            }
+
             lastKnownPosition = fovScript.playerRef.transform.position;
             hasLastKnownPos = true;
 
-            // Look toward player
             LookAtTarget(lastKnownPosition);
 
             if (fovScript.isPlayerDetected)
             {
+                // Chase officially initiated -> Report to MusicManager
+                if (!isCurrentlyChasing)
+                {
+                    isCurrentlyChasing = true;
+                    if (MusicManager.Instance != null)
+                        MusicManager.Instance.ReportChaseState(true);
+                }
+
+                // Full chase started -> Cancel Question Mark & Trigger Chase Sound
+                questionMarkTimer = 0f;
+
+                if (!playedChaseSound)
+                {
+                    PlaySFX(chaseSoundClip);
+                    playedChaseSound = true;
+                    exclamationMarkTimer = exclamationMarkDuration;
+                }
+
                 agent.isStopped = false;
                 agent.speed = chaseSpeed;
                 agent.SetDestination(lastKnownPosition);
             }
             else
             {
-                // Stand still and face player while alert timer fills up
                 agent.isStopped = true;
             }
         }
@@ -75,32 +153,31 @@ public class EnemyController : MonoBehaviour
         else if (hasLastKnownPos)
         {
             patrolScript.enabled = false;
-
-            // Master timer tracking total time since sight was lost
             investigationTimer += Time.deltaTime;
 
-            // FIXED DURATION EXPIRED -> Return to patrol
+            // Stop reporting chase to MusicManager if sight was lost
+            StopChaseState();
+
+            playedAlertSound = false;
+            playedChaseSound = false;
+
             if (investigationTimer >= investigationDuration)
             {
                 AbandonSearchAndPatrol();
                 return;
             }
 
-            // Always turn towards the last known spot when standing
             LookAtTarget(lastKnownPosition);
 
-            // STAGE A: Hesitation / Delay Period (Enemy stands still & inspects)
             if (investigationTimer < hesitationDelay)
             {
                 agent.isStopped = true;
             }
-            // STAGE B: Moving to last known position
             else
             {
-                // Check if arrived at destination
                 if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    agent.isStopped = true; // Arrived -> wait out remaining time
+                    agent.isStopped = true;
                 }
                 else
                 {
@@ -110,9 +187,14 @@ public class EnemyController : MonoBehaviour
                 }
             }
         }
-        // 3. PATROL STATE: Normal patrolling
+        // 3. PATROL STATE
         else
         {
+            StopChaseState();
+
+            playedAlertSound = false;
+            playedChaseSound = false;
+
             if (!patrolScript.enabled)
             {
                 agent.speed = patrolSpeed;
@@ -120,28 +202,96 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        // Drive animation states cleanly
-        UpdateAnimations();
+        // Update UI icon countdowns
+        UpdateIconTimers();
+
+        // Drive Animation Bools & Footstep Audio
+        UpdateAnimationsAndAudio();
     }
 
-    private void UpdateAnimations()
+    private void UpdateIconTimers()
     {
-        if (anim == null || agent == null) return;
+        // Handle Exclamation Mark timer
+        if (exclamationMarkTimer > 0f)
+        {
+            exclamationMarkTimer -= Time.deltaTime;
+            SetIconActive(exclamationMarkIcon, true);
+            SetIconActive(questionMarkIcon, false); // Exclamation mark takes priority
+        }
+        else
+        {
+            SetIconActive(exclamationMarkIcon, false);
 
-        // 1. Check if the agent has a valid path and is meant to be moving
+            // Handle Question Mark timer (continues counting down independently of line of sight)
+            if (questionMarkTimer > 0f)
+            {
+                questionMarkTimer -= Time.deltaTime;
+                SetIconActive(questionMarkIcon, true);
+            }
+            else
+            {
+                SetIconActive(questionMarkIcon, false);
+            }
+        }
+    }
+
+    private void SetIconActive(GameObject icon, bool active)
+    {
+        if (icon != null && icon.activeSelf != active)
+        {
+            icon.SetActive(active);
+        }
+    }
+
+    private void PlaySFX(AudioClip clip)
+    {
+        if (sfxAudioSource != null && clip != null)
+        {
+            sfxAudioSource.PlayOneShot(clip);
+        }
+    }
+
+    private void UpdateAnimationsAndAudio()
+    {
+        if (agent == null) return;
+
+        // Multi-fallback movement check to prevent velocity drops on low acceleration
         bool hasPathToFollow = agent.hasPath && !agent.isStopped && agent.remainingDistance > agent.stoppingDistance;
-
-        // 2. Multi-fallback velocity check (prevents isWalking staying false on low acceleration)
         bool isMovingByVelocity = agent.velocity.sqrMagnitude > 0.01f || agent.desiredVelocity.sqrMagnitude > 0.01f;
-
         bool isMoving = hasPathToFollow && isMovingByVelocity;
 
-        // Inspecting is true when the enemy has a point of interest (hesitating or searching) but isn't moving
         bool isInspecting = hasLastKnownPos && !isMoving;
 
-        // Send bools to Animator
-        anim.SetBool("isWalking", isMoving);
-        anim.SetBool("isInspecting", isInspecting);
+        if (anim != null)
+        {
+            anim.SetBool("isWalking", isMoving);
+            anim.SetBool("isInspecting", isInspecting);
+        }
+
+        HandleFootstepAudio(isMoving);
+    }
+
+    private void HandleFootstepAudio(bool isMoving)
+    {
+        if (footstepAudioSource == null || footstepAudioSource.clip == null) return;
+
+        if (isMoving)
+        {
+            if (!footstepAudioSource.isPlaying)
+            {
+                footstepAudioSource.Play();
+            }
+
+            // Pitch up slightly when chasing vs patrolling
+            footstepAudioSource.pitch = (agent.speed == chaseSpeed) ? 1.25f : 1.0f;
+        }
+        else
+        {
+            if (footstepAudioSource.isPlaying)
+            {
+                footstepAudioSource.Stop();
+            }
+        }
     }
 
     private void LookAtTarget(Vector3 targetPos)
@@ -156,10 +306,28 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    private void StopChaseState()
+    {
+        if (isCurrentlyChasing)
+        {
+            isCurrentlyChasing = false;
+            if (MusicManager.Instance != null)
+                MusicManager.Instance.ReportChaseState(false);
+        }
+    }
+
     private void AbandonSearchAndPatrol()
     {
+        StopChaseState();
+
         hasLastKnownPos = false;
         investigationTimer = 0f;
+        questionMarkTimer = 0f;
+        exclamationMarkTimer = 0f;
+        playedAlertSound = false;
+        playedChaseSound = false;
+        SetIconActive(questionMarkIcon, false);
+        SetIconActive(exclamationMarkIcon, false);
         agent.speed = patrolSpeed;
         patrolScript.enabled = true;
     }
