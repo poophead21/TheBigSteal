@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float patrolSpeed = 3.5f;
 
     [Header("Investigation Settings")]
-    [Tooltip("How long the enemy WAITS at its current spot before starting to move towards the last known position.")]
+    [Tooltip("How long the enemy WAITS looking around at its spot before moving to the last known position.")]
     [SerializeField] private float hesitationDelay = 1.5f;
 
     [Tooltip("EXACT TOTAL TIME (in seconds) the enemy will spend searching/investigating after losing sight before returning to patrol.")]
@@ -19,6 +19,9 @@ public class EnemyController : MonoBehaviour
 
     [Header("Rotation Settings")]
     [SerializeField] private float turnSpeed = 8f;
+
+    [Header("Animation Reference")]
+    [SerializeField] private Animator anim;
 
     private EnemyPatrol patrolScript;
     private FieldOfView fovScript;
@@ -33,6 +36,10 @@ public class EnemyController : MonoBehaviour
         patrolScript = GetComponent<EnemyPatrol>();
         fovScript = GetComponent<FieldOfView>();
         agent = GetComponent<NavMeshAgent>();
+
+        // Auto-assign Animator from children if not set manually in Inspector
+        if (anim == null)
+            anim = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -79,10 +86,10 @@ public class EnemyController : MonoBehaviour
                 return;
             }
 
-            // Always turn towards the last known spot
+            // Always turn towards the last known spot when standing
             LookAtTarget(lastKnownPosition);
 
-            // STAGE A: Hesitation / Delay Period (Enemy stands still)
+            // STAGE A: Hesitation / Delay Period (Enemy stands still & inspects)
             if (investigationTimer < hesitationDelay)
             {
                 agent.isStopped = true;
@@ -112,6 +119,29 @@ public class EnemyController : MonoBehaviour
                 patrolScript.enabled = true;
             }
         }
+
+        // Drive animation states cleanly
+        UpdateAnimations();
+    }
+
+    private void UpdateAnimations()
+    {
+        if (anim == null || agent == null) return;
+
+        // 1. Check if the agent has a valid path and is meant to be moving
+        bool hasPathToFollow = agent.hasPath && !agent.isStopped && agent.remainingDistance > agent.stoppingDistance;
+
+        // 2. Multi-fallback velocity check (prevents isWalking staying false on low acceleration)
+        bool isMovingByVelocity = agent.velocity.sqrMagnitude > 0.01f || agent.desiredVelocity.sqrMagnitude > 0.01f;
+
+        bool isMoving = hasPathToFollow && isMovingByVelocity;
+
+        // Inspecting is true when the enemy has a point of interest (hesitating or searching) but isn't moving
+        bool isInspecting = hasLastKnownPos && !isMoving;
+
+        // Send bools to Animator
+        anim.SetBool("isWalking", isMoving);
+        anim.SetBool("isInspecting", isInspecting);
     }
 
     private void LookAtTarget(Vector3 targetPos)
