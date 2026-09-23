@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(movementDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         
-        Vector3 movement = transform.forward * speed;
+        Vector3 movement = movementDirection * speed;
 
         /*float animationVelocity = movement.magnitude;
         _animator.SetFloat("Velocity", Mathf.Clamp01(animationVelocity), 0.1f, Time.deltaTime);
