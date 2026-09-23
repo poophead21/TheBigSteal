@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             isCrouching = !isCrouching;
-            _animator.SetBool("isCrouching", isCrouching);
+            _animator.SetBool("IsCrouching", isCrouching);
 
             if (isCrouching)
             {
@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift) && !isCrouching)
         {
             isRunning = !isRunning;
-            _animator.SetBool("isRunning", isRunning);
+            _animator.SetBool("IsRunning", isRunning);
             
             if (isRunning)
             {
@@ -109,9 +109,9 @@ public class PlayerMovement : MonoBehaviour
         
         Vector3 movement = movementDirection * speed;
 
-        /*float animationVelocity = movement.magnitude;
+        float animationVelocity = movement.magnitude;
         _animator.SetFloat("Velocity", Mathf.Clamp01(animationVelocity), 0.1f, Time.deltaTime);
-        Debug.Log(animationVelocity);*/
+        Debug.Log(animationVelocity);
         
         characterController.Move(movement * Time.deltaTime);
     }
