@@ -4,62 +4,50 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private CharacterController _characterController;
+    private Animator _animator;
+    private CapsuleCollider _capsuleCollider;
+    
     [Header("Variables")]
     [SerializeField] public float speed = 5f;
+    private float baseSpeed;
     [SerializeField] private float rotationSpeed = 360f;
     [SerializeField] private Transform cameraTransform;
     
+    [Header("Velocity")]
+    private Vector3 sideVelocity;
+    private Vector3 forwardVelocity;
     private Vector3 input;
     private Vector3 velocity;
-    private CharacterController characterController;
-    private Animator _animator;
+    private Vector3 movement;
     
+    [Header("Vertical")]
+    [SerializeField] private float gravity = 9.18f;
+    [SerializeField] private float stickToGroundVelocity;
+    private float verticalVelocity;
+    
+    
+    [Header("Booleans")]
     public bool isCrouching = false;
     public bool isPushing = false;
     public bool isRotating = false;
     public bool isRunning = false;
-    
-    private Vector3 sideVelocity;
-    private Vector3 forwardVelocity;
 
     private void Start()
     {
-        characterController = GetComponent<CharacterController>();
-        _animator  = GetComponent<Animator>();
+        _characterController = GetComponent<CharacterController>();
+        _animator = GetComponent<Animator>();
+        _capsuleCollider = GetComponent<CapsuleCollider>();
+
+        baseSpeed = speed;
     }
     private void Update()
     {
-        UpdateVelocity();
-        
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            isCrouching = !isCrouching;
-            _animator.SetBool("IsCrouching", isCrouching);
+        UpdateHorizontalVelocity();
+        UpdateVerticalVelocity();
+        //ApplyTotalVelocity();
 
-            if (isCrouching)
-            {
-                Crouch();
-            }
-            else
-            {
-                GetUp();
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isCrouching)
-        {
-            isRunning = !isRunning;
-            _animator.SetBool("IsRunning", isRunning);
-            
-            if (isRunning)
-            {
-                Run();
-            }
-            else
-            {
-                StopRunning();
-            }
-        }
+        CheckCrouchingRunning();
 
         if (Input.GetKeyDown(KeyCode.E) && !isCrouching)
         {
@@ -84,8 +72,13 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /*private void ApplyTotalVelocity()
+    {
+        characterController.Move(movement * Time.deltaTime);
+    }*/
 
-    private void UpdateVelocity()
+
+    private void UpdateHorizontalVelocity()
     {
         float horizontalInput  = Input.GetAxisRaw("Horizontal");
         float verticalInput  = Input.GetAxisRaw("Vertical");
@@ -110,31 +103,87 @@ public class PlayerMovement : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(movementDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         
-        Vector3 movement = movementDirection * speed;
-
+        movement = movementDirection * speed;
         
-        characterController.Move(movement * Time.deltaTime);
+        _characterController.Move(movement * Time.deltaTime);
     }
 
+    private void UpdateVerticalVelocity()
+    {
+        if (_characterController.isGrounded && _characterController.velocity.y < 0)
+        {
+            verticalVelocity = stickToGroundVelocity;
+        }
+        verticalVelocity -= gravity * Time.deltaTime;
+        
+        _characterController.Move(verticalVelocity * Vector3.up);
+    }
+
+    private void CheckCrouchingRunning()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            if (isRunning)
+            {
+                isRunning = false;
+            }
+            
+            isCrouching = !isCrouching;
+            
+            if (isCrouching)
+            {
+                Crouch();
+            }
+            else
+            {
+                GetUp();
+            }
+            
+            _animator.SetBool("IsCrouching", isCrouching);
+            _animator.SetBool("IsRunning", isRunning);
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            if (isCrouching)
+            {
+                isCrouching = false;
+            }
+            
+            isRunning = !isRunning;
+            
+            if (isRunning)
+            {
+                Run();
+            }
+            else
+            {
+                StopRunning();
+            }
+            
+            _animator.SetBool("IsRunning", isRunning);
+            _animator.SetBool("IsCrouching", isCrouching);
+        }
+    }
     private void Crouch()
     {
-        characterController.height = 1f;
-        speed = speed / 2f;
-    }
-
-    private void Run()
-    {
-        speed = speed * 2f;
+        //_characterController.height = 1f;
+        speed = baseSpeed / 2f;
     }
 
     private void GetUp()
     {
-        characterController.height = 2f;
-        speed = speed * 2f;
+        //_characterController.height = 2f;
+        speed = baseSpeed;
+    }
+    private void Run()
+    {
+        speed = baseSpeed * 2f;
     }
 
     private void StopRunning()
     {
-        speed = speed / 2f;
+        speed = baseSpeed;
     }
 }
