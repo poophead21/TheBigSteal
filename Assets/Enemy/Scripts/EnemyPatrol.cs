@@ -26,6 +26,7 @@ public class EnemyPatrol : MonoBehaviour
         // Resume navigation when script is re-enabled
         if (agent != null && waypoints != null && waypoints.Length > 0)
         {
+            isWaiting = false;
             agent.isStopped = false;
             SetDestinationToCurrentWaypoint();
         }
@@ -45,8 +46,8 @@ public class EnemyPatrol : MonoBehaviour
         if (waypoints == null || waypoints.Length == 0 || isWaiting)
             return;
 
-        // Check if agent has arrived at current waypoint
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        // FIXED: Wait until path is calculated AND agent has actual remaining distance
+        if (!agent.pathPending && agent.hasPath && agent.remainingDistance <= agent.stoppingDistance)
         {
             StartCoroutine(WaitAtWaypoint());
         }
@@ -54,8 +55,9 @@ public class EnemyPatrol : MonoBehaviour
 
     private void SetDestinationToCurrentWaypoint()
     {
-        if (waypoints[currentWaypointIndex] != null)
+        if (waypoints != null && waypoints.Length > currentWaypointIndex && waypoints[currentWaypointIndex] != null)
         {
+            agent.isStopped = false;
             agent.SetDestination(waypoints[currentWaypointIndex].position);
         }
     }
