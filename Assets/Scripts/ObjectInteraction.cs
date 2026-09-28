@@ -1,6 +1,7 @@
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class ObjectInteraction : MonoBehaviour
 {
@@ -20,80 +21,116 @@ public class ObjectInteraction : MonoBehaviour
     private Vector3 moveTo;
     private quaternion rotateTo;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    Vector3 gizmoLineStart;
+    Vector3 gizmoLineEnd;
+
     void Start()
     {
+        BoxCollider collider = GetComponent<BoxCollider>();
+        if (collider == null)
+            Debug.LogError("Interactable object " + this + " does not contain required box collider.");
+        else if (collider.size.x != collider.size.z)
+            Debug.LogWarning("Interactable object " + this + " is not square in the xz plane.");
+
         moveSpeed = moveDistance / moveTime;
         rotateSpeed = rotateAngle / rotateTime;
+    }
+
+    private void PushUpdate()
+    {
+        float moveStep = moveSpeed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, moveTo, moveStep);
+
+        if (Vector3.Distance(transform.position, moveTo) < 0.001f)
+        {
+            transform.position = moveTo;
+            isBeingInteractedWith = false;
+        }
+    }
+
+    private void RotateUpdate()
+    {
+        float rotateStep = rotateSpeed * Time.deltaTime;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, rotateTo, rotateStep);
+
+        if (Quaternion.Angle(transform.rotation, rotateTo) < 0.01f)
+        {
+            transform.rotation = rotateTo;
+            isBeingInteractedWith = false;
+        }
+    }
+
+    private void InteractUpdate()
+    {
+        switch (interactionType)
+        {
+            case InteractionType.PUSH:
+                PushUpdate();
+                break;
+            case InteractionType.ROTATE:
+                RotateUpdate();
+                break;
+        }
+    }
+
+    private void StartPushing(Vector3 playerToObject)
+    {
+        interactionType = InteractionType.PUSH;
+        Vector3 direction;
+        if (Mathf.Abs(playerToObject.x) > Mathf.Abs(playerToObject.z))
+        {
+            direction = (playerToObject.x > 0.0f) ? new Vector3(1.0f, 0.0f, 0.0f) : new Vector3(-1.0f, 0.0f, 0.0f);
+        }
+        else
+        {
+            direction = (playerToObject.z > 0.0f) ? new Vector3(0.0f, 0.0f, 1.0f) : new Vector3(0.0f, 0.0f, -1.0f);
+        }
+
+        BoxCollider collider = GetComponent<BoxCollider>();
+        Vector3 origin = transform.position + (collider.size.x / 2.0f * transform.localScale.x + 0.001f) * direction; // assuming the collider is centered and square on the xz plane
+        gizmoLineStart = origin;
+        gizmoLineEnd = origin + direction * moveDistance;
+
+        bool hit = Physics.Raycast(origin, direction, moveDistance);
+
+        if (hit)
+            isBeingInteractedWith = false;
+        else
+            moveTo = transform.position + direction * moveDistance;
+    }
+
+    private void StartInteracting()
+    {
+        Vector3 playerToObject = transform.position - player.transform.position;
+
+        bool pushing = player.GetComponent<PlayerMovement>().isPushing;
+        bool rotating = player.GetComponent<PlayerMovement>().isRotating;
+
+        if (playerToObject.magnitude > interactDistance) return;
+        if (Vector3.Angle(player.transform.forward, playerToObject) > 45.0f) return;
+
+        if (!pushing && !rotating) return;
+
+        isBeingInteractedWith = true;
+
+        if (pushing)
+        {
+            StartPushing(playerToObject);
+        }
+        else if (rotating)
+        {
+            interactionType = InteractionType.ROTATE;
+            rotateTo = transform.rotation * quaternion.RotateY(rotateAngle / 180 * Mathf.PI);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         if (isBeingInteractedWith)
-        {
-            switch (interactionType)
-            {
-                case InteractionType.PUSH:
-                    float moveStep = moveSpeed * Time.deltaTime;
-                    transform.position = Vector3.MoveTowards(transform.position, moveTo, moveStep);
-
-                    if (Vector3.Distance(transform.position, moveTo) < 0.001f)
-                    {
-                        isBeingInteractedWith = false;
-                    }
-                    break;
-                case InteractionType.ROTATE:
-                    float rotateStep = rotateSpeed * Time.deltaTime;
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, rotateTo, rotateStep);
-
-                    if (Quaternion.Angle(transform.rotation, rotateTo) < 0.01f)
-                    {
-                        isBeingInteractedWith = false;
-                    }
-                    break;
-            }
-
-
-        }
+            InteractUpdate();
         else
-        {
-            Vector3 playerToObject = transform.position - player.transform.position;
-
-
-            bool pushing = player.GetComponent<PlayerMovement>().isPushing;
-            bool rotating = player.GetComponent<PlayerMovement>().isRotating;
-
-
-            if (playerToObject.magnitude > interactDistance) return;
-            if (Vector3.Angle(player.transform.forward, playerToObject) > 45.0f) return;
-
-            if (!pushing && !rotating) return;
-
-            isBeingInteractedWith = true;
-
-            if (pushing)
-            {
-                interactionType = InteractionType.PUSH;
-                Vector3 direction;
-                if (Mathf.Abs(playerToObject.x) > Mathf.Abs(playerToObject.z))
-                {
-                    direction = (playerToObject.x > 0.0f) ? new Vector3(1.0f, 0.0f, 0.0f) : new Vector3(-1.0f, 0.0f, 0.0f);
-                }
-                else
-                {
-                    direction = (playerToObject.z > 0.0f) ? new Vector3(0.0f, 0.0f, 1.0f) : new Vector3(0.0f, 0.0f, -1.0f);
-                }
-
-                moveTo = transform.position + direction * moveDistance;
-            }
-            else if (rotating)
-            {
-                interactionType = InteractionType.ROTATE;
-
-                rotateTo = transform.rotation * quaternion.RotateY(rotateAngle / 180 * Mathf.PI);
-            }
-        }
+            StartInteracting();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -137,5 +174,10 @@ public class ObjectInteraction : MonoBehaviour
             zOverlap += (zOverlap > 0.0f) ? 0.001f : -0.001f;
             transform.position -= new Vector3(0.0f, 0.0f, zOverlap);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(gizmoLineStart, gizmoLineEnd);
     }
 }
