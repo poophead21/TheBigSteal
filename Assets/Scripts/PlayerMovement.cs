@@ -101,6 +101,9 @@ public class PlayerMovement : MonoBehaviour
         
         Vector3 movementDirection = cameraForward * verticalInput + cameraRight * horizontalInput;
 
+        float movementAnimation = Mathf.Clamp01(movementDirection.magnitude);
+        _animator.SetFloat("Velocity", movementAnimation, 0.1f, Time.deltaTime);
+
         if (movementDirection.sqrMagnitude < 0.01f) return;
         movementDirection.Normalize();
         
@@ -109,8 +112,6 @@ public class PlayerMovement : MonoBehaviour
         
         Vector3 movement = movementDirection * speed;
 
-        float movementAnimation = Mathf.Clamp01(movement.magnitude);
-        _animator.SetFloat("Velocity", movementAnimation, 0.1f, Time.deltaTime);
         
         characterController.Move(movement * Time.deltaTime);
     }
