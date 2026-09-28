@@ -21,9 +21,6 @@ public class ObjectInteraction : MonoBehaviour
     private Vector3 moveTo;
     private quaternion rotateTo;
 
-    Vector3 gizmoLineStart;
-    Vector3 gizmoLineEnd;
-
     void Start()
     {
         BoxCollider collider = GetComponent<BoxCollider>();
@@ -88,8 +85,6 @@ public class ObjectInteraction : MonoBehaviour
 
         BoxCollider collider = GetComponent<BoxCollider>();
         Vector3 origin = transform.position + (collider.size.x / 2.0f * transform.localScale.x + 0.001f) * direction; // assuming the collider is centered and square on the xz plane
-        gizmoLineStart = origin;
-        gizmoLineEnd = origin + direction * moveDistance;
 
         bool hit = Physics.Raycast(origin, direction, moveDistance);
 
@@ -174,10 +169,5 @@ public class ObjectInteraction : MonoBehaviour
             zOverlap += (zOverlap > 0.0f) ? 0.001f : -0.001f;
             transform.position -= new Vector3(0.0f, 0.0f, zOverlap);
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(gizmoLineStart, gizmoLineEnd);
     }
 }
