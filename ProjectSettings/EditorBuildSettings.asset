@@ -8,6 +8,21 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/Scenes/TestLevelLayout.unity
+    guid: aa440630c08b5e949a343ac1bc81a72c
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 6365f3adb04d65a4bb9834bdf084a777
+  - enabled: 1
+    path: Assets/Scenes/Level1.unity
+    guid: 63c655b7fc9ec5046b53af522db45cc6
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: 358dde36e5782e845896dc70889fd476
+  - enabled: 1
+    path: Assets/Scenes/Level3.unity
+    guid: 6696949c4bc07ae4d9ae2aaf8b92e010
   - enabled: 1
     path: Assets/Scenes/EnemyAI.unity
     guid: 03a31c6e8761e0f41b7f204e97c52d78
