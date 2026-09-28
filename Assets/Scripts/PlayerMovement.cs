@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     {
         UpdateVelocity();
         
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !isRunning)
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             isCrouching = !isCrouching;
             _animator.SetBool("IsCrouching", isCrouching);
@@ -100,9 +100,6 @@ public class PlayerMovement : MonoBehaviour
         cameraRight.Normalize();
         
         Vector3 movementDirection = cameraForward * verticalInput + cameraRight * horizontalInput;
-        
-        float movementAnimation  = Mathf.Clamp01(movementDirection.magnitude);
-        _animator.SetFloat("Velocity", movementAnimation, 0.1f, Time.deltaTime);
 
         if (movementDirection.sqrMagnitude < 0.01f) return;
         movementDirection.Normalize();
@@ -110,9 +107,10 @@ public class PlayerMovement : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(movementDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         
-        //Vector3 movement = transform.forward * speed;
         Vector3 movement = movementDirection * speed;
 
+        float movementAnimation = Mathf.Clamp01(movement.magnitude);
+        _animator.SetFloat("Velocity", movementAnimation, 0.1f, Time.deltaTime);
         
         characterController.Move(movement * Time.deltaTime);
     }
