@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 public class ManageScenes : MonoBehaviour
 {
     public static ManageScenes Instance;
+    
+    public delegate void OnSceneEvent(Scene scene);
+    public event OnSceneEvent OnNextLevel;
 
     private void Awake()
     {
@@ -18,37 +21,37 @@ public class ManageScenes : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void ReloadScene()
+    public void ReloadScene()
     {
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.buildIndex);
     }
 
-    private void MainMenu()
+    public void MainMenu()
     {
         SceneManager.LoadScene(0);
     }
 
-    private void ExitGame()
+    public void ExitGame()
     {
         Application.Quit();
     }
 
-    /*private void LoadNextLevel()
+    public void LoadNextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }*/
-    private void LoadLevel1()
+    }
+    public void LoadLevel1()
     {
         SceneManager.LoadScene(1);
     }
     
-    private void LoadLevel2()
+    public void LoadLevel2()
     {
         SceneManager.LoadScene(2);
     }
     
-    private void LoadLevel3()
+    public void LoadLevel3()
     {
         SceneManager.LoadScene(3);
     }

@@ -41,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isPushing = false;
     public bool isRotating = false;
     public bool isRunning = false;
+    public bool hasInteracted = false;
 
     private void Start()
     {
@@ -67,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _animator.SetTrigger("Interact");
             isPushing = true;
+            hasInteracted = true;
         }
 
         if (Input.GetKeyUp(KeyCode.E))
@@ -78,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _animator.SetTrigger("Interact");
             isRotating = true;
+            hasInteracted = true;
         }
 
         if (Input.GetKeyUp(KeyCode.Q))
@@ -215,5 +218,13 @@ public class PlayerMovement : MonoBehaviour
         
         _characterController.height = Mathf.Lerp(_characterController.height, targetHeight, 5f * Time.deltaTime);
         _characterController.center = Vector3.Lerp(_characterController.center, targetCenter, 5f * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Door"))
+        {
+            Debug.Log("Entered Door");
+        }
     }
 }
