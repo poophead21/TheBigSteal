@@ -81,10 +81,40 @@ In the "development" section, you can also link this feature to a branch. For no
 
 &nbsp;
 
-
-
 Finally, you can indicate a relationship with other issues. In the example's case, it wasn't necessary, but it might be that you need something else implemented before the issue you just created can be done. In that case, select "Is Blocked By" and select the issue this just created issue depends on.
 
 <img width="490" height="331" alt="image" src="https://github.com/user-attachments/assets/3707f66b-05f5-44ec-9020-1ba213df2206" />
 
 &nbsp;
+
+# Update Issue Progress
+
+When working on the project, make sure to update your issue statuses. When you start working on an issue, please move the issue from "backlog" to "in progress"
+
+<img width="639" height="625" alt="image" src="https://github.com/user-attachments/assets/475ba413-e761-4f19-8cd3-50b62821ed6a" />
+
+&nbsp;
+
+<img width="556" height="486" alt="image" src="https://github.com/user-attachments/assets/6c16ddd2-4f94-40fe-9f36-329a3901cb1f" />
+
+&nbsp;
+
+If for some reason, you cannot continue working on your issue, you can drag the issue to the "blocked" lane. When the blockage gets resolved, it can be moved back to "in progress".
+
+<img width="1084" height="486" alt="image" src="https://github.com/user-attachments/assets/b86914ab-75f1-4cfb-a49c-0625e46f1d76" />
+
+&nbsp;
+
+When you finish working on your issue, you can move it to "in review".
+
+<img width="1089" height="469" alt="image" src="https://github.com/user-attachments/assets/929bb2ef-1ac1-442e-ba77-1c7d843f281c" />
+
+&nbsp;
+
+The reviewer can review the issue. If the review isn't approved, the reviewer can move the task back to "in progress", and otherwise, it can be moved to "done".
+
+<img width="1083" height="450" alt="image" src="https://github.com/user-attachments/assets/9b577277-4ec3-4345-ad6a-effcb2e95e64" />
+
+&nbsp;
+
+<img width="1104" height="337" alt="image" src="https://github.com/user-attachments/assets/acdc7915-1921-4863-b517-97e8bbb260ab" />
