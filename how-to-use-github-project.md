@@ -118,3 +118,89 @@ The reviewer can review the issue. If the review isn't approved, the reviewer ca
 &nbsp;
 
 <img width="1104" height="337" alt="image" src="https://github.com/user-attachments/assets/acdc7915-1921-4863-b517-97e8bbb260ab" />
+
+# How to Review
+
+Below is the workflow for reviewing tasks, first from the point of view of the person assigned to the issue, and then the reviewer's point of view.
+
+## Assigned
+
+When an issue is ready to be review, first drag the issue to the review lane, and open the issue.
+
+<img width="537" height="342" alt="image" src="https://github.com/user-attachments/assets/1ffb73fe-7b89-42b6-b044-e2122119727c" />
+
+&nbsp;
+
+Then press the three dots and press "Copy Markdown" option.
+
+<img width="1684" height="478" alt="image" src="https://github.com/user-attachments/assets/93e4d1ae-32db-4879-914e-8eda2e199589" />
+
+&nbsp;
+
+Then on the right-hand side, under "Development", go to the branch associated with the issue.
+
+<img width="496" height="136" alt="image" src="https://github.com/user-attachments/assets/d2f90d00-b828-4809-8403-eedc0b8ccb1e" />
+
+&nbsp;
+
+After navigating to the branch, under "Contribute" press "Open pull request".
+
+<img width="1377" height="420" alt="image" src="https://github.com/user-attachments/assets/ee5bfcd7-03f7-4776-8556-50918fc8b245" />
+
+&nbsp;
+
+Paste the markdown in the description, and fill in the "Reviewer Tasks" section (if not done so already), and the "Evidence/Notes" section.
+
+<img width="1890" height="1219" alt="image" src="https://github.com/user-attachments/assets/781d810d-1954-44d9-8465-a456111fd3a8" />
+
+&nbsp;
+
+Then, on the right hand side, on the top, you can assign someone to review your pull request.
+
+<img width="478" height="475" alt="image" src="https://github.com/user-attachments/assets/27867006-2690-4c26-a881-6f04d57e7334" />
+
+&nbsp;
+
+Finally, go back to the project and open the issue again. Now under "Development", select the PR you just created.
+
+<img width="504" height="340" alt="image" src="https://github.com/user-attachments/assets/cfedfb73-aa2e-4b1e-a496-6841031164c4" />
+
+## Reviewer
+
+When the assigned person followed the steps, above, the reviewer can open the issue on the project board.
+
+<img width="537" height="291" alt="image" src="https://github.com/user-attachments/assets/43e54f54-4c42-4918-ae10-97f1d158d8f4" />
+&nbsp;
+
+Under "Development", they can go to the linked PR.
+
+<img width="490" height="166" alt="image" src="https://github.com/user-attachments/assets/4d6941e7-54e7-4432-9cab-7694b3dad67c" />
+
+&nbsp;
+
+Look at the evidence/notes and follow each of the reviewer tasks. 
+
+<img width="1335" height="1228" alt="image" src="https://github.com/user-attachments/assets/376b76ba-36ee-4cca-96ca-de2e320d8d05" />
+
+&nbsp;
+
+You can also go to the "Files changed" tab, and leave comments on specific code snippets.
+
+<img width="247" height="72" alt="image" src="https://github.com/user-attachments/assets/7e49fdc4-3a2f-4208-b0c7-05547f1a2f23" />
+
+&nbsp;
+
+<img width="1326" height="702" alt="image" src="https://github.com/user-attachments/assets/dfb6f5d5-a553-44da-8f4c-75008fd60b22" />
+
+&nbsp;
+
+When you're done reviewing, and approve of the changes, you can press "Merge pull request" at the bottom of the PR.
+
+<img width="1330" height="453" alt="image" src="https://github.com/user-attachments/assets/d92181ca-6867-48de-a201-52e82e4455ea" />
+&nbsp;
+
+Then, you can navigate back to the project board, and move the issue from "In review" to "Done".
+
+<img width="1083" height="292" alt="image" src="https://github.com/user-attachments/assets/5c73875f-2d84-4931-b072-ef66faafc229" />
+
+If instead, you don't approve of the changes, leave a comment on the Pull Request, or on the issue, and drag the issue back to "In Progress".
