@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
@@ -23,5 +24,10 @@ public class Door : MonoBehaviour
     private void OpenDoor()
     {
         _animation.Play("DoorOpen");
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        ManageScenes.Instance.LoadNextLevel();
     }
 }
