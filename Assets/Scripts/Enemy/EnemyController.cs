@@ -89,7 +89,7 @@ public class EnemyController : MonoBehaviour
 
         if (sfxAudioSource != null)
         {
-            sfxAudioSource.spatialBlend = 1.0f; // Full 3D spatial sound
+            sfxAudioSource.spatialBlend = 1.0f;
             sfxAudioSource.playOnAwake = false;
         }
 
@@ -105,13 +105,10 @@ public class EnemyController : MonoBehaviour
             patrolScript.enabled = false;
             investigationTimer = 0f;
 
-            // Trigger Alert Sound ONCE when line of sight is gained
             if (!playedAlertSound)
             {
                 PlaySFX(alertSoundClip);
                 playedAlertSound = true;
-
-                // Start Question Mark timer (will run out independently of sight)
                 questionMarkTimer = questionMarkDuration;
             }
 
@@ -122,7 +119,6 @@ public class EnemyController : MonoBehaviour
 
             if (fovScript.isPlayerDetected)
             {
-                // Chase officially initiated -> Report to MusicManager
                 if (!isCurrentlyChasing)
                 {
                     isCurrentlyChasing = true;
@@ -130,7 +126,6 @@ public class EnemyController : MonoBehaviour
                         MusicManager.Instance.ReportChaseState(true);
                 }
 
-                // Full chase started -> Cancel Question Mark & Trigger Chase Sound
                 questionMarkTimer = 0f;
 
                 if (!playedChaseSound)
@@ -155,7 +150,6 @@ public class EnemyController : MonoBehaviour
             patrolScript.enabled = false;
             investigationTimer += Time.deltaTime;
 
-            // Stop reporting chase to MusicManager if sight was lost
             StopChaseState();
 
             playedAlertSound = false;
@@ -202,27 +196,22 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        // Update UI icon countdowns
         UpdateIconTimers();
-
-        // Drive Animation Bools & Footstep Audio
         UpdateAnimationsAndAudio();
     }
 
     private void UpdateIconTimers()
     {
-        // Handle Exclamation Mark timer
         if (exclamationMarkTimer > 0f)
         {
             exclamationMarkTimer -= Time.deltaTime;
             SetIconActive(exclamationMarkIcon, true);
-            SetIconActive(questionMarkIcon, false); // Exclamation mark takes priority
+            SetIconActive(questionMarkIcon, false);
         }
         else
         {
             SetIconActive(exclamationMarkIcon, false);
 
-            // Handle Question Mark timer (continues counting down independently of line of sight)
             if (questionMarkTimer > 0f)
             {
                 questionMarkTimer -= Time.deltaTime;
@@ -255,22 +244,22 @@ public class EnemyController : MonoBehaviour
     {
         if (agent == null) return;
 
-        // Multi-fallback movement check to prevent velocity drops on low acceleration
         bool hasPathToFollow = agent.hasPath && !agent.isStopped && agent.remainingDistance > agent.stoppingDistance;
         bool isMovingByVelocity = agent.velocity.sqrMagnitude > 0.01f || agent.desiredVelocity.sqrMagnitude > 0.01f;
         bool isMoving = hasPathToFollow && isMovingByVelocity;
 
-        bool isInspecting = hasLastKnownPos && !isMoving;
+        // Force isInspecting to FALSE during an active chase
+        bool isInspecting = hasLastKnownPos && !isMoving && !isCurrentlyChasing;
 
         if (anim != null)
         {
-            anim.SetBool("isWalking", isMoving);
+            anim.SetBool("isWalking", isMoving && !isCurrentlyChasing);
+            anim.SetBool("isChasing", isMoving && isCurrentlyChasing);
             anim.SetBool("isInspecting", isInspecting);
         }
 
         HandleFootstepAudio(isMoving);
     }
-
     private void HandleFootstepAudio(bool isMoving)
     {
         if (footstepAudioSource == null || footstepAudioSource.clip == null) return;
@@ -282,7 +271,6 @@ public class EnemyController : MonoBehaviour
                 footstepAudioSource.Play();
             }
 
-            // Pitch up slightly when chasing vs patrolling
             footstepAudioSource.pitch = (agent.speed == chaseSpeed) ? 1.25f : 1.0f;
         }
         else
@@ -328,6 +316,7 @@ public class EnemyController : MonoBehaviour
         playedChaseSound = false;
         SetIconActive(questionMarkIcon, false);
         SetIconActive(exclamationMarkIcon, false);
+
         agent.speed = patrolSpeed;
         patrolScript.enabled = true;
     }
