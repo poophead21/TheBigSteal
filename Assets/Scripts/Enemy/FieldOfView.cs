@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement; // Required for reloading the scene
 
 public class FieldOfView : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class FieldOfView : MonoBehaviour
     [Tooltip("Radius around enemy that instantly detects the player even if behind them.")]
     public float proximityAlertRadius = 3.0f;
 
-    [Tooltip("Proximity radius around enemy where touching the player instantly kills them.")]
+    [Tooltip("Proximity radius around enemy where touching the player instantly resets the scene.")]
     public float killRadius = 1.5f;
 
     [Header("Alert Settings")]
@@ -42,9 +43,6 @@ public class FieldOfView : MonoBehaviour
     public bool isPlayerDetected;
     public float detectionTimer = 0f;
 
-    /// <summary>
-    /// Calculates eye origin position using basic offset math.
-    /// </summary>
     public Vector3 GetEyePosition()
     {
         Vector3 pos = transform.position;
@@ -78,7 +76,7 @@ public class FieldOfView : MonoBehaviour
     {
         Vector3 eyeOrigin = GetEyePosition();
 
-        // 1. PROXIMITY ALERT CHECK (Detects player inside proximity radius regardless of angle)
+        // 1. Proximity Alert Check
         Collider[] proximityChecks = Physics.OverlapSphere(transform.position, proximityAlertRadius, targetMask);
         if (proximityChecks.Length > 0)
         {
@@ -86,7 +84,7 @@ public class FieldOfView : MonoBehaviour
             return;
         }
 
-        // 2. REGULAR VISION CONE & RAYCAST CHECK
+        // 2. Regular Vision Cone Check
         Collider[] rangeChecks = Physics.OverlapSphere(eyeOrigin, radius, targetMask);
 
         if (rangeChecks.Length != 0)
@@ -94,7 +92,6 @@ public class FieldOfView : MonoBehaviour
             GameObject targetObj = rangeChecks[0].gameObject;
             Vector3 targetPos = targetObj.transform.position;
 
-            // Check if player is crouching
             bool isPlayerCrouching = false;
             PlayerMovement playerScript = targetObj.GetComponent<PlayerMovement>();
             if (playerScript != null)
@@ -102,31 +99,27 @@ public class FieldOfView : MonoBehaviour
                 isPlayerCrouching = playerScript.isCrouching;
             }
 
-            // Adjust raycast target height
             float targetOffset = isPlayerCrouching ? crouchingTargetHeight : standingTargetHeight;
             Vector3 targetCheckPos = new Vector3(targetPos.x, targetPos.y + targetOffset, targetPos.z);
 
             Vector3 directionToTarget = (targetCheckPos - eyeOrigin).normalized;
 
-            // Angle check inside FOV cone
             if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
             {
                 float distanceToTarget = Vector3.Distance(eyeOrigin, targetCheckPos);
 
-                // Editor Debug ray (Green = clear vision, Red = blocked by cover/wall)
 #if UNITY_EDITOR
                 Debug.DrawRay(eyeOrigin, directionToTarget * distanceToTarget,
                     !Physics.Raycast(eyeOrigin, directionToTarget, distanceToTarget, obstructionMask) ? Color.green : Color.red, 0.1f);
 #endif
 
-                // Obstruction raycast check
                 if (!Physics.Raycast(eyeOrigin, directionToTarget, distanceToTarget, obstructionMask))
                 {
                     canSeePlayer = true;
                 }
                 else
                 {
-                    canSeePlayer = false; // Cover blocked raycast to player's current height
+                    canSeePlayer = false;
                 }
             }
             else
@@ -175,27 +168,26 @@ public class FieldOfView : MonoBehaviour
 
     private void KillPlayer()
     {
-        Debug.Log("Player killed by proximity!");
-        Destroy(playerRef);
+        Debug.Log("Player caught! Reloading scene...");
+
+        // Reload current active scene
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
     }
 
     private void OnDrawGizmosSelected()
     {
         Vector3 eyePos = GetEyePosition();
 
-        // Eye Height Origin Point (Cyan)
         Gizmos.color = Color.cyan;
         Gizmos.DrawSphere(eyePos, 0.15f);
 
-        // Proximity Kill Radius (Red)
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, killRadius);
 
-        // Proximity Alert Radius (Cyan Wireframe)
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, proximityAlertRadius);
 
-        // Vision Radius from Eye Level (Yellow)
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(eyePos, radius);
     }
