@@ -19,7 +19,6 @@ public class FadeManager : MonoBehaviour
     [SerializeField] private float fadeDuration;
     [SerializeField] private float fadeDelayBeforeFade;
 
-
     private void Awake()
     { 
         if (Instance == null) 
@@ -42,7 +41,7 @@ public class FadeManager : MonoBehaviour
             DoFade(fadeStartAlpha, fadeEndAlpha, fadeDuration, fadeDelayBeforeFade);
         }
     }
-
+    
     public void DoFade(float startAlpha, float endAlpha, float duration, float delayBeforeFade)
     {
         /*if (fadeCoroutine != null)
