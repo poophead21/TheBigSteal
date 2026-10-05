@@ -16,14 +16,18 @@ public class EnemyPatrol : MonoBehaviour
     private int currentWaypointIndex = 0;
     private bool isWaiting = false;
 
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
     }
 
     private void OnEnable()
     {
-        // Resume navigation when script is re-enabled
         if (agent != null && waypoints != null && waypoints.Length > 0)
         {
             isWaiting = false;
@@ -34,7 +38,6 @@ public class EnemyPatrol : MonoBehaviour
 
     private void OnDisable()
     {
-        // Stop navigation cleanly when disabled by EnemyController
         if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
         {
             agent.isStopped = true;
@@ -46,10 +49,30 @@ public class EnemyPatrol : MonoBehaviour
         if (waypoints == null || waypoints.Length == 0 || isWaiting)
             return;
 
-        // FIXED: Wait until path is calculated AND agent has actual remaining distance
         if (!agent.pathPending && agent.hasPath && agent.remainingDistance <= agent.stoppingDistance)
         {
             StartCoroutine(WaitAtWaypoint());
+        }
+    }
+
+    public void ResetPatrolToStart()
+    {
+        StopAllCoroutines();
+        isWaiting = false;
+        currentWaypointIndex = 0;
+
+        // Teleport NavMeshAgent back to initial spawn position
+        if (agent != null)
+        {
+            agent.isStopped = true;
+            agent.Warp(initialPosition);
+        }
+
+        transform.rotation = initialRotation;
+
+        if (enabled)
+        {
+            SetDestinationToCurrentWaypoint();
         }
     }
 
@@ -68,7 +91,6 @@ public class EnemyPatrol : MonoBehaviour
 
         yield return new WaitForSeconds(waitTimeAtWaypoint);
 
-        // Advance to next waypoint index
         currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
         SetDestinationToCurrentWaypoint();
 

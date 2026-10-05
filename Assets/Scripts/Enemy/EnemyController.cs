@@ -248,7 +248,7 @@ public class EnemyController : MonoBehaviour
         bool isMovingByVelocity = agent.velocity.sqrMagnitude > 0.01f || agent.desiredVelocity.sqrMagnitude > 0.01f;
         bool isMoving = hasPathToFollow && isMovingByVelocity;
 
-        // Force isInspecting to FALSE during an active chase
+        // Force isInspecting to false during an active chase so transitions work smoothly
         bool isInspecting = hasLastKnownPos && !isMoving && !isCurrentlyChasing;
 
         if (anim != null)
@@ -260,6 +260,7 @@ public class EnemyController : MonoBehaviour
 
         HandleFootstepAudio(isMoving);
     }
+
     private void HandleFootstepAudio(bool isMoving)
     {
         if (footstepAudioSource == null || footstepAudioSource.clip == null) return;
@@ -304,6 +305,11 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    public void ResetEnemyToPatrol()
+    {
+        AbandonSearchAndPatrol();
+    }
+
     private void AbandonSearchAndPatrol()
     {
         StopChaseState();
@@ -328,6 +334,18 @@ public class EnemyController : MonoBehaviour
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireSphere(lastKnownPosition, 0.5f);
             Gizmos.DrawLine(transform.position, lastKnownPosition);
+        }
+    }
+   
+    public void FullResetGuard()
+    {
+     
+        AbandonSearchAndPatrol();
+
+        
+        if (patrolScript != null)
+        {
+            patrolScript.ResetPatrolToStart();
         }
     }
 }

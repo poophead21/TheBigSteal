@@ -480,7 +480,7 @@ MonoBehaviour:
   standingTargetHeight: 1
   crouchingTargetHeight: 0.4
   proximityAlertRadius: 2.6
-  killRadius: 0
+  killRadius: 1.23
   timeToDetect: 1
   playerRef: {fileID: 919132148482890105}
   canSeePlayer: 0
@@ -522,7 +522,7 @@ MonoBehaviour:
   patrolSpeed: 2
   hesitationDelay: 1.5
   investigationDuration: 6
-  turnSpeed: 15
+  turnSpeed: 48.2
   questionMarkIcon: {fileID: 200462480}
   exclamationMarkIcon: {fileID: 1836917165}
   questionMarkDuration: 3
