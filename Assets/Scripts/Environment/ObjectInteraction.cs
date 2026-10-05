@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.UI.Image;
 
+
 public class ObjectInteraction : MonoBehaviour
 {
     [Header("Variables")]
@@ -12,7 +13,8 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField] private float rotateAngle = 90.0f;
     [SerializeField] private float rotateTime = 1.0f;
     [SerializeField] private GameObject player;
-
+    
+    private const float EPSILON = 0.0001f;
     private bool isBeingInteractedWith = false;
     private enum InteractionType { PUSH, ROTATE };
     private InteractionType interactionType = InteractionType.PUSH;
@@ -84,9 +86,9 @@ public class ObjectInteraction : MonoBehaviour
         }
 
         BoxCollider collider = GetComponent<BoxCollider>();
-        Vector3 origin = transform.position + (collider.size.x / 2.0f * transform.localScale.x + 0.001f) * direction; // assuming the collider is centered and square on the xz plane
+        Vector3 origin = transform.position + (collider.size.x / 2.0f * transform.localScale.x + EPSILON) * direction; // assuming the collider is centered and square on the xz plane
 
-        bool hit = Physics.Raycast(origin, direction, moveDistance);
+        bool hit = Physics.Raycast(origin, direction, moveDistance - 2 * EPSILON);
 
         if (hit)
             isBeingInteractedWith = false;

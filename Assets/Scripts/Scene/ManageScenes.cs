@@ -6,8 +6,7 @@ public class ManageScenes : MonoBehaviour
 {
     public static ManageScenes Instance;
     
-    public delegate void OnSceneEvent();
-    public event OnSceneEvent OnNextLevel;
+
 
     private void Awake()
     {
