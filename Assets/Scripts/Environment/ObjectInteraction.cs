@@ -1,3 +1,4 @@
+using System;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -22,6 +23,10 @@ public class ObjectInteraction : MonoBehaviour
     private float rotateSpeed;
     private Vector3 moveTo;
     private quaternion rotateTo;
+    
+    //UI related
+    [SerializeField] private MeshRenderer meshrenderer;
+    [SerializeField] private GameObject UICanvas;
 
     void Start()
     {
@@ -30,9 +35,23 @@ public class ObjectInteraction : MonoBehaviour
             Debug.LogError("Interactable object " + this + " does not contain required box collider.");
         else if (collider.size.x != collider.size.z)
             Debug.LogWarning("Interactable object " + this + " is not square in the xz plane.");
+        
+        //UI related
+        meshrenderer = GetComponent<MeshRenderer>();
+        SetOutline(false);
 
         moveSpeed = moveDistance / moveTime;
         rotateSpeed = rotateAngle / rotateTime;
+    }
+
+    private void SetOutline(bool enabled) //UI related
+    {
+        Material[] materials = meshrenderer.materials;
+
+        if (materials.Length > 2)
+        {
+            materials[2].SetFloat("_OutlineWidth", enabled ? 2f : 0f);
+        }
     }
 
     private void PushUpdate()
@@ -137,6 +156,16 @@ public class ObjectInteraction : MonoBehaviour
             resolveCollision(GetComponent<Collider>().bounds, other.bounds);
             isBeingInteractedWith = false;
         }
+        
+        //UI component
+        SetOutline(true);
+        UICanvas.SetActive(true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        SetOutline(false);
+        UICanvas.SetActive(false);
     }
 
     private void resolveCollision(Bounds bounds, Bounds otherBounds)
