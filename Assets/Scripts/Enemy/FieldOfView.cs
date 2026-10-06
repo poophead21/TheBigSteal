@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement; // Required for reloading the scene
 
 public class FieldOfView : MonoBehaviour
 {
@@ -108,10 +108,10 @@ public class FieldOfView : MonoBehaviour
             {
                 float distanceToTarget = Vector3.Distance(eyeOrigin, targetCheckPos);
 
-
+#if UNITY_EDITOR
                 Debug.DrawRay(eyeOrigin, directionToTarget * distanceToTarget,
                     !Physics.Raycast(eyeOrigin, directionToTarget, distanceToTarget, obstructionMask) ? Color.green : Color.red, 0.1f);
-
+#endif
 
                 if (!Physics.Raycast(eyeOrigin, directionToTarget, distanceToTarget, obstructionMask))
                 {
@@ -168,7 +168,7 @@ public class FieldOfView : MonoBehaviour
 
     private void KillPlayer()
     {
-        Debug.Log("Player caught! Reloading scene...");
+        Debug.Log("Player cock");
 
         // Reload current active scene
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
