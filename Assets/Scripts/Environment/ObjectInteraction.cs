@@ -27,6 +27,7 @@ public class ObjectInteraction : MonoBehaviour
     //UI related
     [SerializeField] private MeshRenderer meshrenderer;
     [SerializeField] private GameObject UICanvas;
+    [SerializeField] private Outline outline;
 
     void Start()
     {
@@ -36,22 +37,19 @@ public class ObjectInteraction : MonoBehaviour
         else if (collider.size.x != collider.size.z)
             Debug.LogWarning("Interactable object " + this + " is not square in the xz plane.");
         
-        //UI related
-        meshrenderer = GetComponent<MeshRenderer>();
-        SetOutline(false);
 
         moveSpeed = moveDistance / moveTime;
         rotateSpeed = rotateAngle / rotateTime;
+        
+        //UI related
+        outline  = GetComponent<Outline>();
+        SetOutline(false);
     }
 
     private void SetOutline(bool enabled) //UI related
     {
-        Material[] materials = meshrenderer.materials;
-
-        if (materials.Length > 2)
-        {
-            materials[2].SetFloat("_OutlineWidth", enabled ? 2f : 0f);
-        }
+        outline.enabled = enabled;
+        
     }
 
     private void PushUpdate()
