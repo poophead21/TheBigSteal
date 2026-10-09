@@ -1,10 +1,11 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Mirror : MonoBehaviour
+public class Mirror : MonoBehaviour, ILightReceiver
 {
     public bool isReflecting;
-    private LineRenderer lightReflection;
+    private LineRenderer lineRenderer;
 
     Vector3 lightStart;
     Vector3 lightEnd;
@@ -13,48 +14,48 @@ public class Mirror : MonoBehaviour
 
     private void Start()
     {
-        lightReflection = GetComponentInChildren<LineRenderer>();
+        lineRenderer = GetComponentInChildren<LineRenderer>();
+
+        lightStart = transform.position + Vector3.up;
+        lightEnd = transform.position + transform.forward * 10 + Vector3.up;
     }
 
     private void Update()
     {
-        LightEmitter();
+        UpdateLight();
+        Check();
     }
 
-    private void LightEmitter()
+    private void UpdateLight()
     {
-        /*if (!isReflecting) lightReflection.enabled = false;
-        
-        else
+        if (isReflecting)
         {
             lightStart = transform.position + Vector3.up;
             lightEnd = transform.position + transform.forward * 10 + Vector3.up;
             startEndPoint = new Vector3[2] { lightStart, lightEnd };
 
-            lightReflection.SetPositions(startEndPoint);
-            lightReflection.enabled = true;
+            lineRenderer.enabled = true;
+            lineRenderer.SetPositions(startEndPoint);
+        }
+        else lineRenderer.enabled = false;
+    }
 
-            Mirror stuff;
+    public void Check()
+    {
+        if (isReflecting)
+        {
             if (Physics.Raycast(startEndPoint[0], transform.forward, out RaycastHit thing, 10))
             {
                 lightEnd = thing.point;
-                startEndPoint[1] = lightEnd;
+                lineRenderer.SetPosition(1, thing.point);
 
-                if (thing.collider.gameObject.TryGetComponent(out stuff))
-                {
-                    Toggle();
-                }
+                if (thing.collider.TryGetComponent(out ILightReceiver stuff)) stuff.LightReceived();
             }
-        }*/
+        }
     }
 
-    public void Toggle(bool input)
+    public void LightReceived()
     {
-        isReflecting = !isReflecting;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(lightStart, lightEnd);
+        isReflecting = true;
     }
 }

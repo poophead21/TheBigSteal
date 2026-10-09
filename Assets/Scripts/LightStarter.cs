@@ -3,7 +3,6 @@ using UnityEngine.Rendering.Universal;
 
 public class LightStarter : MonoBehaviour
 {
-    public bool isReflecting;
     private LineRenderer lightReflection;
 
     Vector3 lightStart;
@@ -16,31 +15,33 @@ public class LightStarter : MonoBehaviour
     {
         lightReflection = GetComponentInChildren<LineRenderer>();
     }
-    private void Update()
+
+    private void Update() 
     {
-        Lighter();
+        UpdateLight();
+        Check();
     }
-    private void Lighter()
+
+    private void UpdateLight()
     {
         lightStart = transform.position + Vector3.up;
         lightEnd = transform.position + transform.forward * 10 + Vector3.up;
         startEndPoint = new Vector3[2] { lightStart, lightEnd };
 
         lightReflection.SetPositions(startEndPoint);
-        lightReflection.enabled = true;
+    }
 
-        Mirror stuff;
+    public void Check()
+    {
         if (Physics.Raycast(startEndPoint[0], transform.forward, out RaycastHit thing, 10))
         {
             lightEnd = thing.point;
-            startEndPoint[1] = lightEnd;
+            lightReflection.SetPosition(1, thing.point);
 
-            if (thing.collider.gameObject.TryGetComponent(out stuff))
-            {
-                stuff.Toggle();
-            }
+            if (thing.collider.TryGetComponent(out ILightReceiver stuff)) stuff.LightReceived();
         }
     }
+    
 
     private void OnDrawGizmos()
     {
