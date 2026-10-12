@@ -219,12 +219,4 @@ public class PlayerMovement : MonoBehaviour
         _characterController.height = Mathf.Lerp(_characterController.height, targetHeight, 5f * Time.deltaTime);
         _characterController.center = Vector3.Lerp(_characterController.center, targetCenter, 5f * Time.deltaTime);
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Door"))
-        {
-            Debug.Log("Entered Door");
-        }
-    }
 }

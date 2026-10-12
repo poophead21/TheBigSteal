@@ -49,7 +49,6 @@ public class ObjectInteraction : MonoBehaviour
     private void SetOutline(bool enabled) //UI related
     {
         outline.enabled = enabled;
-        
     }
 
     private void PushUpdate()
@@ -162,6 +161,7 @@ public class ObjectInteraction : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        //UI component
         SetOutline(false);
         UICanvas.SetActive(false);
     }

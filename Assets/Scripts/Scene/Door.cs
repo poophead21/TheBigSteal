@@ -13,21 +13,22 @@ public class Door : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnCPActivated += OpenDoor;
+        //GameManager.Instance.OnCPActivated += OpenDoor;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnCPActivated -= OpenDoor;
+        //GameManager.Instance.OnCPActivated -= OpenDoor;
     }
 
-    private void OpenDoor()
+    public void OpenDoor()
     {
         _animation.Play("DoorOpen");
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("trigg entered");
         ManageScenes.Instance.LoadNextLevel();
     }
 }
