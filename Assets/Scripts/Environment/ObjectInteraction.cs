@@ -29,9 +29,12 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField] private MeshRenderer meshrenderer;
     [SerializeField] private GameObject UICanvas;
     [SerializeField] private Outline outline;
+    
+    private AudioManager audioManager;
 
     void Start()
     {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         _playerMovement = player.GetComponent<PlayerMovement>();
         
         BoxCollider collider = GetComponent<BoxCollider>();
@@ -83,9 +86,11 @@ public class ObjectInteraction : MonoBehaviour
         switch (interactionType)
         {
             case InteractionType.PUSH:
+                audioManager.GetAudioClip(0);
                 PushUpdate();
                 break;
             case InteractionType.ROTATE:
+                audioManager.GetAudioClip(0);
                 RotateUpdate();
                 break;
         }
