@@ -14,6 +14,7 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField] private float rotateAngle = 90.0f;
     [SerializeField] private float rotateTime = 1.0f;
     [SerializeField] private GameObject player;
+    private PlayerMovement _playerMovement;
     
     private const float EPSILON = 0.0001f;
     private bool isBeingInteractedWith = false;
@@ -31,6 +32,8 @@ public class ObjectInteraction : MonoBehaviour
 
     void Start()
     {
+        _playerMovement = player.GetComponent<PlayerMovement>();
+        
         BoxCollider collider = GetComponent<BoxCollider>();
         if (collider == null)
             Debug.LogError("Interactable object " + this + " does not contain required box collider.");

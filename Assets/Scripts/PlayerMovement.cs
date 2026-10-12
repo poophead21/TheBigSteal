@@ -35,9 +35,9 @@ public class PlayerMovement : MonoBehaviour
     private float standHeight;
     private Vector3 standCenter;
 
+    [Header("Interaction")]
     private bool canAnimateInteract = true;
-    
-    
+    [SerializeField] public float interactWaitTime = 2f;
     
     [Header("Booleans")]
     public bool isCrouching = false;
@@ -97,12 +97,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    IEnumerator PlayerInteract()
-    {
-        _animator.SetTrigger("Interact");
-        yield return new WaitForSeconds(3f);
-        canAnimateInteract = true;
-    }
 
     private void ApplyTotalVelocity()
     {
@@ -233,5 +227,11 @@ public class PlayerMovement : MonoBehaviour
         
         _characterController.height = Mathf.Lerp(_characterController.height, targetHeight, 5f * Time.deltaTime);
         _characterController.center = Vector3.Lerp(_characterController.center, targetCenter, 5f * Time.deltaTime);
+    }
+    IEnumerator PlayerInteract()
+    {
+        _animator.SetTrigger("Interact");
+        yield return new WaitForSeconds(interactWaitTime);
+        canAnimateInteract = true;
     }
 }
