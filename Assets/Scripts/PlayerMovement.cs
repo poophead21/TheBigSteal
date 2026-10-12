@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector3 crouchCenter = new Vector3(0f, 0.5f, 0f);
     private float standHeight;
     private Vector3 standCenter;
+
+    private bool canAnimateInteract = true;
     
     
     
@@ -66,9 +69,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E) && !isCrouching)
         {
-            _animator.SetTrigger("Interact");
             isPushing = true;
             hasInteracted = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && canAnimateInteract)
+        {
+            canAnimateInteract = false;
+            StartCoroutine(PlayerInteract());
         }
 
         if (Input.GetKeyUp(KeyCode.E))
@@ -87,6 +95,13 @@ public class PlayerMovement : MonoBehaviour
         {
             isRotating = false;
         }
+    }
+
+    IEnumerator PlayerInteract()
+    {
+        _animator.SetTrigger("Interact");
+        yield return new WaitForSeconds(3f);
+        canAnimateInteract = true;
     }
 
     private void ApplyTotalVelocity()
