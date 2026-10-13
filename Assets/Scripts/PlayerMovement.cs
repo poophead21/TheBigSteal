@@ -7,7 +7,6 @@ public class PlayerMovement : MonoBehaviour
 {
     private CharacterController _characterController;
     private Animator _animator;
-    private CapsuleCollider _capsuleCollider;
     
     [Header("Variables")]
     [SerializeField] public float speed = 5f;
@@ -50,22 +49,29 @@ public class PlayerMovement : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
-        _capsuleCollider = GetComponent<CapsuleCollider>();
         
         baseSpeed = speed;
         
         //crouch
         standCenter = _characterController.center;
         standHeight = _characterController.height;
+        
     }
     private void Update()
     {
-        UpdateHorizontalVelocity();
-        UpdateVerticalVelocity();
-        ApplyTotalVelocity();
+        if (canAnimateInteract)
+        {
+            UpdateHorizontalVelocity();
+            UpdateVerticalVelocity();
+            ApplyTotalVelocity();
 
-        CheckCrouchingRunning();
-        UpdateController();
+            CheckCrouchingRunning();
+            UpdateController();
+        }
+        else if (!canAnimateInteract)
+        {
+            _animator.SetFloat("Velocity", 0, 0.1f, Time.deltaTime);
+        }
 
         if (Input.GetKeyDown(KeyCode.E) && !isCrouching)
         {

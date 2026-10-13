@@ -9,13 +9,13 @@ public class AudioManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();   
     }
 
-    public void GetAudioClip(int clip)
+    public void GetAudioClip(int clipIndex)
     {
         foreach (AudioClip audioClip in audioClips)
         {
-            if (audioClip == audioSource.clip)
+            if (audioClip.name == audioClips[clipIndex].name)
             {
-                audioSource.PlayOneShot(audioSource.clip);
+                audioSource.PlayOneShot(audioClips[clipIndex]);
             }
         }
     }

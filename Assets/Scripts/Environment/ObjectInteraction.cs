@@ -34,7 +34,7 @@ public class ObjectInteraction : MonoBehaviour
 
     void Start()
     {
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        audioManager = GameObject.Find("SoundManager").GetComponent<AudioManager>();
         _playerMovement = player.GetComponent<PlayerMovement>();
         
         BoxCollider collider = GetComponent<BoxCollider>();
@@ -86,11 +86,9 @@ public class ObjectInteraction : MonoBehaviour
         switch (interactionType)
         {
             case InteractionType.PUSH:
-                audioManager.GetAudioClip(0);
                 PushUpdate();
                 break;
             case InteractionType.ROTATE:
-                audioManager.GetAudioClip(0);
                 RotateUpdate();
                 break;
         }
@@ -98,6 +96,8 @@ public class ObjectInteraction : MonoBehaviour
 
     private void StartPushing(Vector3 playerToObject)
     {
+        Debug.Log("Push");
+        audioManager.GetAudioClip(0);
         interactionType = InteractionType.PUSH;
         Vector3 direction;
         if (Mathf.Abs(playerToObject.x) > Mathf.Abs(playerToObject.z))
@@ -140,6 +140,8 @@ public class ObjectInteraction : MonoBehaviour
         }
         else if (rotating)
         {
+            Debug.Log("Rotate");
+            audioManager.GetAudioClip(0);
             interactionType = InteractionType.ROTATE;
             rotateTo = transform.rotation * quaternion.RotateY(rotateAngle / 180 * Mathf.PI);
         }
