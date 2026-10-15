@@ -2,26 +2,28 @@ using UnityEngine;
 
 public class LightEmitter : MonoBehaviour
 {
+    private const float MaxDistance = 100f;
+    
     public bool isEmitting = true;
     public float height = 0.0f;
     
-    private const float MaxDistance = 100f;
-    
+    protected float emitAngle = 0.0f;
+
     private LineRenderer lineRenderer;
-    private ILightReceiver hitReceiver;
-
-    Vector3 lightStart;
-    Vector3 lightEnd;
-
+    private ILightReceiver lightReceiver;
+    private Vector3 lightStart;
+    private Vector3 lightEnd;
+    
     private void Start()
     {
         lineRenderer = GetComponentInChildren<LineRenderer>();
+        lineRenderer.enabled = false;
         UpdateLight();
     }
 
-    private void Update() 
+    protected virtual void Update() 
     {
-        UpdateLight();
+        if (transform.hasChanged) UpdateLight();
     }
     
     private void UpdateLight()
@@ -32,28 +34,35 @@ public class LightEmitter : MonoBehaviour
 
     private void UpdateLightOn()
     {
+        Vector3 emitDirection = Quaternion.Euler(0.0f, emitAngle, 0.0f) * transform.forward;
+        
         lineRenderer.enabled = true;
         lightStart = transform.position + height * Vector3.up;
-        lightEnd = transform.position + transform.forward * MaxDistance + height * Vector3.up;
+        lightEnd = transform.position + emitDirection * MaxDistance + height * Vector3.up;
         
-        if (Physics.Raycast(lightStart, transform.forward, out RaycastHit hit, MaxDistance))
+        if (Physics.Raycast(lightStart, emitDirection, out RaycastHit hit, MaxDistance))
         {
             lightEnd = hit.point;
 
-            if (hit.collider.TryGetComponent(out ILightReceiver lightReceiver))
+            if (hit.collider.TryGetComponent(out ILightReceiver newLightReceiver))
             {
-                lightReceiver.LightReceived();
-                hitReceiver = lightReceiver;
+                if (lightReceiver != newLightReceiver)
+                {
+                    if (lightReceiver != null)
+                        lightReceiver.NoLightReceived();
+                    lightReceiver = newLightReceiver;
+                    lightReceiver.LightReceived(emitDirection);
+                }
             }
-            else if (hitReceiver != null)
+            else if (lightReceiver != null)
             {
-                hitReceiver.NoLightReceived();
-                hitReceiver = null;
+                lightReceiver.NoLightReceived();
+                lightReceiver = null;
             }
-        } else if (hitReceiver != null)
+        } else if (lightReceiver != null)
         {
-            hitReceiver.NoLightReceived();
-            hitReceiver = null;
+            lightReceiver.NoLightReceived();
+            lightReceiver = null;
         }
         lineRenderer.SetPositions(new Vector3[2]{lightStart, lightEnd});
     }
@@ -61,9 +70,10 @@ public class LightEmitter : MonoBehaviour
     private void UpdateLightOff()
     {
         lineRenderer.enabled = false;
-        if (hitReceiver != null)
+        if (lightReceiver != null)
         {
-            hitReceiver.NoLightReceived();
+            lightReceiver.NoLightReceived();
+            lightReceiver = null;
         }
     }
 
