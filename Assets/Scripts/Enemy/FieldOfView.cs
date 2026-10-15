@@ -166,14 +166,27 @@ public class FieldOfView : MonoBehaviour
         }
     }
 
+    private bool isCaught = false;
+
     private void KillPlayer()
     {
+        if (isCaught) return;
+        isCaught = true;
+
         Debug.Log("Player cock");
 
-        // Reload current active scene
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+        if (PlayDeathTransition.Instance != null)
+        {
+            PlayDeathTransition.Instance.TriggerDeathSequence();
+        }
+        else
+        {
+            // Fallback direct reload if transition script is missing
+            int currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneIndex);
+        }
     }
+
 
     private void OnDrawGizmosSelected()
     {
