@@ -35,13 +35,12 @@ public class Mirror : LightEmitter, ILightReceiver
     public void UpdateReflection()
     {
         float angle = Vector3.SignedAngle(incomingLightDirection, transform.forward, Vector3.up);
-        float rightAngleDiff = Mathf.Abs(angle % 90.0f);
-        isEmitting = rightAngleDiff < 1.0f ||  rightAngleDiff > 89.0f;
+        isEmitting = true;
         
-        // assuming 2-way reflecting mirror that goes from forward left to back right
+        // assuming one-way reflecting mirror that goes from forward left to back right with the reflective side on the
+        // back-left
         if (angle > -1.0f && angle < 1.0f) emitAngle = -90.0f;
-        if (angle > 89.0f && angle < 91.0f)  emitAngle = 0.0f;
-        if (angle > 179.0f || angle <  -179.0f) emitAngle = 90.0f;
-        if (angle > -91.0f && angle < -89.0f)  emitAngle = 180.0f;
+        else if (angle > -91.0f && angle < -89.0f)  emitAngle = 180.0f;
+        else isEmitting = false;
     }
 }

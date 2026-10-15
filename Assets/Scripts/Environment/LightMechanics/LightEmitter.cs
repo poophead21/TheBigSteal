@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class LightEmitter : MonoBehaviour
 {
+    private const float MaxDistance = 100f;
+    
     public bool isEmitting = true;
-    protected float emitAngle = 0.0f;
     public float height = 0.0f;
     
-    private const float MaxDistance = 100f;
+    protected float emitAngle = 0.0f;
     
     private LineRenderer lineRenderer;
     private ILightReceiver lightReceiver;
-
-    Vector3 lightStart;
-    Vector3 lightEnd;
+    private Vector3 lightStart;
+    private Vector3 lightEnd;
     
     private void Start()
     {
@@ -23,8 +23,7 @@ public class LightEmitter : MonoBehaviour
 
     protected virtual void Update() 
     {
-        if (transform.hasChanged)
-            UpdateLight();
+        if (transform.hasChanged) UpdateLight();
     }
     
     private void UpdateLight()
@@ -74,6 +73,7 @@ public class LightEmitter : MonoBehaviour
         if (lightReceiver != null)
         {
             lightReceiver.NoLightReceived();
+            lightReceiver = null;
         }
     }
 
