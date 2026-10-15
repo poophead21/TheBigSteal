@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro; // Required for TextMeshPro
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,8 +7,19 @@ public class PlayDeathTransition : MonoBehaviour
 {
     public static PlayDeathTransition Instance { get; private set; }
 
+    [Header("Animation References")]
     [SerializeField] private Animation deathAnimation;
-    [SerializeField] private float transitionDelay = 1.0f; // Time for iris animation to finish before scene reset
+    [SerializeField] private string irisOpenClipName = "IrisOpen";
+    [SerializeField] private string irisCloseClipName = "IrisClose";
+
+    [Header("Text Overlay Settings")]
+    [SerializeField] private CanvasGroup textCanvasGroup;
+    [SerializeField] private TextMeshProUGUI transitionText;
+    [SerializeField] private string deathMessage = "CAUGHT!";
+
+    [Header("Transition Settings")]
+    [SerializeField] private float transitionDelay = 1.0f; // Duration of closing iris/fade
+    [SerializeField] private bool playIrisOpenOnSceneStart = true;
 
     private bool isTransitioning = false;
 
@@ -27,6 +39,28 @@ public class PlayDeathTransition : MonoBehaviour
         {
             deathAnimation = GetComponent<Animation>();
         }
+
+        // Hide text on startup
+        if (textCanvasGroup != null)
+        {
+            textCanvasGroup.alpha = 0f;
+        }
+    }
+
+    private void Start()
+    {
+        if (playIrisOpenOnSceneStart)
+        {
+            PlayIrisOpen();
+        }
+    }
+
+    public void PlayIrisOpen()
+    {
+        if (deathAnimation != null && !string.IsNullOrEmpty(irisOpenClipName))
+        {
+            deathAnimation.Play(irisOpenClipName);
+        }
     }
 
     public void TriggerDeathSequence()
@@ -39,25 +73,39 @@ public class PlayDeathTransition : MonoBehaviour
     {
         isTransitioning = true;
 
-        // 0. Disable Player Controls & Reset Movement Velocity
+        // 1. Freeze player controls & velocity
         DisablePlayerControls();
 
-        // 1. Play Iris Shot animation
-        if (deathAnimation != null)
+        // 2. Set text message & fade it in
+        if (transitionText != null)
         {
-            deathAnimation.Play();
+            transitionText.text = deathMessage;
         }
 
-        // 2. Trigger screen fade out
+        // 3. Play Iris Close animation
+        if (deathAnimation != null && !string.IsNullOrEmpty(irisCloseClipName))
+        {
+            deathAnimation.Play(irisCloseClipName);
+        }
+
+        // 4. Trigger screen fade and text fade-in
         if (FadeManager.Instance != null)
         {
-            FadeManager.Instance.DoFade(0f, 1f, transitionDelay, 0f); //[cite: 1]
+            FadeManager.Instance.DoFade(0f, 1f, transitionDelay, 0f); 
         }
 
-        // 3. Wait for animation and fade to finish
-        yield return new WaitForSeconds(transitionDelay);
+        float timer = 0f;
+        while (timer < transitionDelay)
+        {
+            timer += Time.deltaTime;
+            if (textCanvasGroup != null)
+            {
+                textCanvasGroup.alpha = Mathf.Clamp01(timer / (transitionDelay * 0.5f));
+            }
+            yield return null;
+        }
 
-        // 4. Reload current active scene
+        // 5. Reload active scene
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
     }
@@ -67,21 +115,18 @@ public class PlayDeathTransition : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player == null) return;
 
-        // Disable PlayerMovement script if attached
         PlayerMovement movementScript = player.GetComponent<PlayerMovement>();
         if (movementScript != null)
         {
             movementScript.enabled = false;
         }
 
-        // Freeze CharacterController velocity
         CharacterController cc = player.GetComponent<CharacterController>();
         if (cc != null)
         {
             cc.enabled = false;
         }
 
-        // Freeze Rigidbody velocity if using physics movement
         Rigidbody rb = player.GetComponent<Rigidbody>();
         if (rb != null)
         {
