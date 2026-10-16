@@ -96,7 +96,6 @@ public class ObjectInteraction : MonoBehaviour
 
     private void StartPushing(Vector3 playerToObject)
     {
-        Debug.Log("Push");
         audioManager.GetAudioClip(0);
         interactionType = InteractionType.PUSH;
         Vector3 direction;
@@ -140,7 +139,6 @@ public class ObjectInteraction : MonoBehaviour
         }
         else if (rotating)
         {
-            Debug.Log("Rotate");
             audioManager.GetAudioClip(0);
             interactionType = InteractionType.ROTATE;
             rotateTo = transform.rotation * quaternion.RotateY(rotateAngle / 180 * Mathf.PI);

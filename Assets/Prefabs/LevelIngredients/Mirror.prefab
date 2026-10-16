@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 644343806900063827}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.3625, z: 0}
+  m_LocalScale: {x: 1.4243, y: 1.4243, z: 1.4243}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8620450582220835673}
@@ -259,8 +259,8 @@ Transform:
   m_GameObject: {fileID: 5180052265226965589}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 1.192, z: 0}
-  m_LocalScale: {x: 1.07, y: 1.56, z: 0.2}
+  m_LocalPosition: {x: 0, y: 1.8625001, z: 0}
+  m_LocalScale: {x: 1.4869969, y: 1.6470479, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5066431442158470440}
@@ -334,6 +334,7 @@ GameObject:
   - component: {fileID: 8620450582220835673}
   - component: {fileID: 587143634964443944}
   - component: {fileID: 487031623180058538}
+  - component: {fileID: 1526351956097474214}
   m_Layer: 0
   m_Name: Mirror
   m_TagString: Untagged
@@ -371,7 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mirror
   isEmitting: 0
-  height: 1
+  height: 2
 --- !u!65 &487031623180058538
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -391,5 +392,26 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2.36, z: 1}
-  m_Center: {x: 0, y: 0.66, z: 0}
+  m_Size: {x: 2, y: 3, z: 2}
+  m_Center: {x: 0.05692339, y: 1.0540633, z: 0.06597328}
+--- !u!114 &1526351956097474214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5676979842338113413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2786530f0e781ea469eeac034a96dc7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectInteraction
+  interactDistance: 2
+  moveDistance: 2
+  moveTime: 1
+  rotateAngle: 90
+  rotateTime: 1
+  player: {fileID: 0}
+  meshrenderer: {fileID: 0}
+  UICanvas: {fileID: 0}
+  outline: {fileID: 0}
