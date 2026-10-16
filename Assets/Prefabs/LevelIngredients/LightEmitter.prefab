@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 3677168489135348364}
   - component: {fileID: 8813911915140874589}
   m_Layer: 0
-  m_Name: LightStart
+  m_Name: LightEmitter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -268,4 +268,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47f91967d415b7a43941afffe59907c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LightStarter
-  isReflecting: 0
+  isEmitting: 1
+  height: 0

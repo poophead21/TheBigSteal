@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
+    bool open = false;
+    
     private Animation _animation;
 
     private void Start()
@@ -23,7 +25,16 @@ public class Door : MonoBehaviour
 
     public void OpenDoor()
     {
+        if (open) return;
+        open = true;
         _animation.Play("DoorOpen");
+    }
+    
+    public void CloseDoor()
+    {
+        if (!open) return;
+        open = false;
+        _animation.Play("DoorClose");
     }
 
     private void OnTriggerEnter(Collider other)
