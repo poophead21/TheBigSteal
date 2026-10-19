@@ -1,3 +1,4 @@
+using System;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField] private float rotateAngle = 90.0f;
     [SerializeField] private float rotateTime = 1.0f;
     [SerializeField] private GameObject player;
+    private PlayerMovement _playerMovement;
     
     private const float EPSILON = 0.0001f;
     private bool isBeingInteractedWith = false;
@@ -22,17 +24,37 @@ public class ObjectInteraction : MonoBehaviour
     private float rotateSpeed;
     private Vector3 moveTo;
     private quaternion rotateTo;
+    
+    //UI related
+    [SerializeField] private MeshRenderer meshrenderer;
+    [SerializeField] private GameObject UICanvas;
+    [SerializeField] private Outline outline;
+    
+    private AudioManager audioManager;
 
     void Start()
     {
+        audioManager = GameObject.Find("SoundManager").GetComponent<AudioManager>();
+        _playerMovement = player.GetComponent<PlayerMovement>();
+        
         BoxCollider collider = GetComponent<BoxCollider>();
         if (collider == null)
             Debug.LogError("Interactable object " + this + " does not contain required box collider.");
         else if (collider.size.x != collider.size.z)
             Debug.LogWarning("Interactable object " + this + " is not square in the xz plane.");
+        
 
         moveSpeed = moveDistance / moveTime;
         rotateSpeed = rotateAngle / rotateTime;
+        
+        //UI related
+        outline  = GetComponent<Outline>();
+        SetOutline(false);
+    }
+
+    private void SetOutline(bool enabled) //UI related
+    {
+        outline.enabled = enabled;
     }
 
     private void PushUpdate()
@@ -74,6 +96,7 @@ public class ObjectInteraction : MonoBehaviour
 
     private void StartPushing(Vector3 playerToObject)
     {
+        audioManager.GetAudioClip(0);
         interactionType = InteractionType.PUSH;
         Vector3 direction;
         if (Mathf.Abs(playerToObject.x) > Mathf.Abs(playerToObject.z))
@@ -116,6 +139,7 @@ public class ObjectInteraction : MonoBehaviour
         }
         else if (rotating)
         {
+            audioManager.GetAudioClip(0);
             interactionType = InteractionType.ROTATE;
             rotateTo = transform.rotation * quaternion.RotateY(rotateAngle / 180 * Mathf.PI);
         }
@@ -137,6 +161,17 @@ public class ObjectInteraction : MonoBehaviour
             resolveCollision(GetComponent<Collider>().bounds, other.bounds);
             isBeingInteractedWith = false;
         }
+        
+        //UI component
+        SetOutline(true);
+        UICanvas.SetActive(true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        //UI component
+        SetOutline(false);
+        UICanvas.SetActive(false);
     }
 
     private void resolveCollision(Bounds bounds, Bounds otherBounds)

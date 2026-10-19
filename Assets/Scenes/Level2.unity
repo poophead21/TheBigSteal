@@ -971,10 +971,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 427505822032060907, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
       insertIndex: 3
-      addedObject: {fileID: 1903891871}
+      addedObject: {fileID: 1903891870}
     - targetCorrespondingSourceObject: {fileID: 427505822032060907, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
       insertIndex: 4
-      addedObject: {fileID: 1903891870}
+      addedObject: {fileID: 1903891873}
   m_SourcePrefab: {fileID: 100100000, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
 --- !u!1 &1903891869 stripped
 GameObject:
@@ -999,7 +999,10 @@ MonoBehaviour:
   rotateAngle: 90
   rotateTime: 1
   player: {fileID: 1442323780}
---- !u!114 &1903891871
+  meshrenderer: {fileID: 0}
+  UICanvas: {fileID: 0}
+  outline: {fileID: 0}
+--- !u!114 &1903891873
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1008,10 +1011,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1903891869}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 395a8b619cbd9e742936598949ef5b82, type: 3}
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TestCheckpointProgression
-  _player: {fileID: 1442323780}
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

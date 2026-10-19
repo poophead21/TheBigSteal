@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +7,6 @@ public class PlayerMovement : MonoBehaviour
 {
     private CharacterController _characterController;
     private Animator _animator;
-    private CapsuleCollider _capsuleCollider;
     
     [Header("Variables")]
     [SerializeField] public float speed = 5f;
@@ -33,8 +33,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vector3 crouchCenter = new Vector3(0f, 0.5f, 0f);
     private float standHeight;
     private Vector3 standCenter;
-    
-    
+
+    [Header("Interaction")]
+    private bool canAnimateInteract = true;
+    [SerializeField] public float interactWaitTime = 2f;
     
     [Header("Booleans")]
     public bool isCrouching = false;
@@ -47,28 +49,40 @@ public class PlayerMovement : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
-        _capsuleCollider = GetComponent<CapsuleCollider>();
         
         baseSpeed = speed;
         
         //crouch
         standCenter = _characterController.center;
         standHeight = _characterController.height;
+        
     }
     private void Update()
     {
-        UpdateHorizontalVelocity();
-        UpdateVerticalVelocity();
-        ApplyTotalVelocity();
+        if (canAnimateInteract)
+        {
+            UpdateHorizontalVelocity();
+            UpdateVerticalVelocity();
+            ApplyTotalVelocity();
 
-        CheckCrouchingRunning();
-        UpdateController();
+            CheckCrouchingRunning();
+            UpdateController();
+        }
+        else if (!canAnimateInteract)
+        {
+            _animator.SetFloat("Velocity", 0, 0.1f, Time.deltaTime);
+        }
 
         if (Input.GetKeyDown(KeyCode.E) && !isCrouching)
         {
-            _animator.SetTrigger("Interact");
             isPushing = true;
             hasInteracted = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && canAnimateInteract)
+        {
+            canAnimateInteract = false;
+            StartCoroutine(PlayerInteract());
         }
 
         if (Input.GetKeyUp(KeyCode.E))
@@ -88,6 +102,7 @@ public class PlayerMovement : MonoBehaviour
             isRotating = false;
         }
     }
+
 
     private void ApplyTotalVelocity()
     {
@@ -219,12 +234,10 @@ public class PlayerMovement : MonoBehaviour
         _characterController.height = Mathf.Lerp(_characterController.height, targetHeight, 5f * Time.deltaTime);
         _characterController.center = Vector3.Lerp(_characterController.center, targetCenter, 5f * Time.deltaTime);
     }
-
-    private void OnTriggerEnter(Collider other)
+    IEnumerator PlayerInteract()
     {
-        if (other.gameObject.CompareTag("Door"))
-        {
-            Debug.Log("Entered Door");
-        }
+        _animator.SetTrigger("Interact");
+        yield return new WaitForSeconds(interactWaitTime);
+        canAnimateInteract = true;
     }
 }

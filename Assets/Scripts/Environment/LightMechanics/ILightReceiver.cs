@@ -2,6 +2,9 @@ using UnityEngine;
 
 public interface ILightReceiver
 {
-    public void LightReceived();
-    public void NoLightReceived();
+    public void LightReceived(Vector3 incomingDirection);
+
+    public void NoLightReceived()
+    {
+    }
 }
