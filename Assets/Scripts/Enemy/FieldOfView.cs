@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement; // Required for reloading the scene
 
 public class FieldOfView : MonoBehaviour
 {
@@ -108,10 +108,10 @@ public class FieldOfView : MonoBehaviour
             {
                 float distanceToTarget = Vector3.Distance(eyeOrigin, targetCheckPos);
 
-
+#if UNITY_EDITOR
                 Debug.DrawRay(eyeOrigin, directionToTarget * distanceToTarget,
                     !Physics.Raycast(eyeOrigin, directionToTarget, distanceToTarget, obstructionMask) ? Color.green : Color.red, 0.1f);
-
+#endif
 
                 if (!Physics.Raycast(eyeOrigin, directionToTarget, distanceToTarget, obstructionMask))
                 {
@@ -166,14 +166,27 @@ public class FieldOfView : MonoBehaviour
         }
     }
 
+    private bool isCaught = false;
+
     private void KillPlayer()
     {
-        Debug.Log("Player caught! Reloading scene...");
+        if (isCaught) return;
+        isCaught = true;
 
-        // Reload current active scene
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+        Debug.Log("Player cock");
+
+        if (PlayDeathTransition.Instance != null)
+        {
+            PlayDeathTransition.Instance.TriggerDeathSequence();
+        }
+        else
+        {
+            // Fallback direct reload if transition script is missing
+            int currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneIndex);
+        }
     }
+
 
     private void OnDrawGizmosSelected()
     {

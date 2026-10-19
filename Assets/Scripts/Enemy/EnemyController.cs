@@ -11,6 +11,10 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float chaseSpeed = 5f;
     [SerializeField] private float patrolSpeed = 3.5f;
 
+    [Header("Memory & Awareness Settings")]
+    [Tooltip("How long (in seconds) the guard retains active awareness of the player's position after losing sight.")]
+    [SerializeField] private float memoryDuration = 3.0f;
+
     [Header("Investigation Settings")]
     [Tooltip("How long the enemy WAITS looking around at its spot before moving to the last known position.")]
     [SerializeField] private float hesitationDelay = 1.5f;
@@ -52,6 +56,7 @@ public class EnemyController : MonoBehaviour
 
     private Vector3 lastKnownPosition;
     private bool hasLastKnownPos = false;
+    private float memoryTimer = 0f;
     private float investigationTimer = 0f;
     private float questionMarkTimer = 0f;
     private float exclamationMarkTimer = 0f;
@@ -65,6 +70,11 @@ public class EnemyController : MonoBehaviour
         patrolScript = GetComponent<EnemyPatrol>();
         fovScript = GetComponent<FieldOfView>();
         agent = GetComponent<NavMeshAgent>();
+
+        // ANTI-SLIDE AGENT CONFIGURATION
+        agent.acceleration = 24f;          // Snappy speed changes
+        agent.stoppingDistance = 0.2f;     // Precise stopping point
+        agent.autoBraking = true;          // Prevents overshooting waypoints
 
         if (anim == null)
             anim = GetComponentInChildren<Animator>();
@@ -99,17 +109,18 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        // 1. DIRECT SIGHT: Player spotted
+        // 1. DIRECT SIGHT: Player visible in FOV cone
         if (fovScript.canSeePlayer && fovScript.playerRef != null)
         {
             patrolScript.enabled = false;
             investigationTimer = 0f;
+            memoryTimer = memoryDuration; // Continuously refresh memory duration while in direct sight
 
             if (!playedAlertSound)
             {
-                PlaySFX(alertSoundClip);
+                PlaySFX(alertSoundClip); 
                 playedAlertSound = true;
-                questionMarkTimer = questionMarkDuration;
+                questionMarkTimer = questionMarkDuration; 
             }
 
             lastKnownPosition = fovScript.playerRef.transform.position;
@@ -130,9 +141,9 @@ public class EnemyController : MonoBehaviour
 
                 if (!playedChaseSound)
                 {
-                    PlaySFX(chaseSoundClip);
-                    playedChaseSound = true;
-                    exclamationMarkTimer = exclamationMarkDuration;
+                    PlaySFX(chaseSoundClip); 
+                    playedChaseSound = true; 
+                    exclamationMarkTimer = exclamationMarkDuration; 
                 }
 
                 agent.isStopped = false;
@@ -144,7 +155,21 @@ public class EnemyController : MonoBehaviour
                 agent.isStopped = true;
             }
         }
-        // 2. LOST SIGHT: Wait hesitationDelay, then go to last known position
+        // 2. HIDDEN / LOST SIGHT: Active memory tracking
+        else if (memoryTimer > 0f && fovScript.playerRef != null)
+        {
+            memoryTimer -= Time.deltaTime;
+
+            // Continuously track player's real-time position behind cover until timer expires
+            lastKnownPosition = fovScript.playerRef.transform.position;
+            hasLastKnownPos = true;
+
+            agent.isStopped = false;
+            agent.speed = chaseSpeed;
+            agent.SetDestination(lastKnownPosition);
+            LookAtTarget(lastKnownPosition);
+        }
+        // 3. MEMORY EXPIRED: Investigate final known position, then return to patrol
         else if (hasLastKnownPos)
         {
             patrolScript.enabled = false;
@@ -181,7 +206,7 @@ public class EnemyController : MonoBehaviour
                 }
             }
         }
-        // 3. PATROL STATE
+        // 4. PATROL STATE
         else
         {
             StopChaseState();
@@ -244,12 +269,12 @@ public class EnemyController : MonoBehaviour
     {
         if (agent == null) return;
 
-        bool hasPathToFollow = agent.hasPath && !agent.isStopped && agent.remainingDistance > agent.stoppingDistance;
-        bool isMovingByVelocity = agent.velocity.sqrMagnitude > 0.01f || agent.desiredVelocity.sqrMagnitude > 0.01f;
-        bool isMoving = hasPathToFollow && isMovingByVelocity;
+        // ACCURATE MOVEMENT CHECK: Evaluates actual physical speed to eliminate animation sliding
+        float currentSpeed = agent.velocity.magnitude;
+        bool isMoving = currentSpeed > 0.1f;
 
-        // Force isInspecting to false during an active chase so transitions work smoothly
-        bool isInspecting = hasLastKnownPos && !isMoving && !isCurrentlyChasing;
+        // Force isInspecting to false during active chase or memory pursuit to ensure clean transitions
+        bool isInspecting = hasLastKnownPos && !isMoving && !isCurrentlyChasing && memoryTimer <= 0f;
 
         if (anim != null)
         {
@@ -285,13 +310,17 @@ public class EnemyController : MonoBehaviour
 
     private void LookAtTarget(Vector3 targetPos)
     {
-        Vector3 direction = (targetPos - transform.position);
-        direction.y = 0f;
-
-        if (direction != Vector3.zero)
+        // Only manually interpolate rotation when the agent is stationary to prevent movement fights
+        if (agent.isStopped || agent.velocity.sqrMagnitude < 0.1f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
+            Vector3 direction = (targetPos - transform.position);
+            direction.y = 0f;
+
+            if (direction != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
+            }
         }
     }
 
@@ -305,16 +334,12 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void ResetEnemyToPatrol()
-    {
-        AbandonSearchAndPatrol();
-    }
-
     private void AbandonSearchAndPatrol()
     {
         StopChaseState();
 
         hasLastKnownPos = false;
+        memoryTimer = 0f;
         investigationTimer = 0f;
         questionMarkTimer = 0f;
         exclamationMarkTimer = 0f;
@@ -331,21 +356,9 @@ public class EnemyController : MonoBehaviour
     {
         if (hasLastKnownPos)
         {
-            Gizmos.color = Color.magenta;
+            Gizmos.color = memoryTimer > 0f ? Color.yellow : Color.magenta;
             Gizmos.DrawWireSphere(lastKnownPosition, 0.5f);
             Gizmos.DrawLine(transform.position, lastKnownPosition);
-        }
-    }
-   
-    public void FullResetGuard()
-    {
-     
-        AbandonSearchAndPatrol();
-
-        
-        if (patrolScript != null)
-        {
-            patrolScript.ResetPatrolToStart();
         }
     }
 }
