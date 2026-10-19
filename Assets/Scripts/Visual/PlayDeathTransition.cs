@@ -115,10 +115,10 @@ public class PlayDeathTransition : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player == null) return;
 
-        PlayerMovement movementScript = player.GetComponent<PlayerMovement>();
-        if (movementScript != null)
+        PlayerController controllerScript = player.GetComponent<PlayerController>();
+        if (controllerScript != null)
         {
-            movementScript.enabled = false;
+            controllerScript.enabled = false;
         }
 
         CharacterController cc = player.GetComponent<CharacterController>();
