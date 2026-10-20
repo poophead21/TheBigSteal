@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ButtonInteract : MonoBehaviour
 {
-    private bool canInteract = false;
+    public bool canInteract = false;
     private bool triggered = false;
     
     [SerializeField] private Material shiningMaterial;
