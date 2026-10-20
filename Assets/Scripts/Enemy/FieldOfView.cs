@@ -93,7 +93,7 @@ public class FieldOfView : MonoBehaviour
             Vector3 targetPos = targetObj.transform.position;
 
             bool isPlayerCrouching = false;
-            PlayerMovement playerScript = targetObj.GetComponent<PlayerMovement>();
+            PlayerController playerScript = targetObj.GetComponent<PlayerController>();
             if (playerScript != null)
             {
                 isPlayerCrouching = playerScript.isCrouching;
