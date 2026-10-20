@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class ButtonInteract : MonoBehaviour
+public class Button : Interactable
 {
-    public bool canInteract = false;
-    private bool triggered = false;
+    private bool canInteract;
+    private bool triggered;
     
     [SerializeField] private Material shiningMaterial;
     [SerializeField] private GameObject buttonTop;
@@ -23,20 +23,13 @@ public class ButtonInteract : MonoBehaviour
         doorScript  = door.GetComponent<Door>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && triggered && canInteract)
-        {
-            StartCoroutine(Interact());
-        }
-    }
-
     IEnumerator Interact()
     {
         _animation.Play();
         yield return new WaitForSeconds(0.5f);
         doorScript.OpenDoor();
     }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -72,5 +65,15 @@ public class ButtonInteract : MonoBehaviour
         materialsCopy[0] = shiningMaterial;
         _rendererButtonTop.materials = materialsCopy;
         
+    }
+
+    public override bool CanInteract(GameObject interactor, InteractionType interactionType)
+    {
+        return (canInteract);
+    }
+
+    public override void Interact(GameObject interactor, InteractionType interactionType)
+    {
+        StartCoroutine(Interact());
     }
 }

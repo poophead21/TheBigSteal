@@ -3,10 +3,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private CharacterController _characterController;
     private Animator _animator;
+    
+    [SerializeField] private float interactDistance = 2.0f;
     
     [Header("Variables")]
     [SerializeField] public float speed = 5f;
@@ -40,10 +42,7 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("Booleans")]
     public bool isCrouching = false;
-    public bool isPushing = false;
-    public bool isRotating = false;
     public bool isRunning = false;
-    public bool hasInteracted = false;
 
     private void Start()
     {
@@ -55,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         //crouch
         standCenter = _characterController.center;
         standHeight = _characterController.height;
-        
+
     }
     private void Update()
     {
@@ -73,33 +72,26 @@ public class PlayerMovement : MonoBehaviour
             _animator.SetFloat("Velocity", 0, 0.1f, Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && !isCrouching)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            isPushing = true;
-            hasInteracted = true;
+            var interactable = CanInteract(InteractionType.PRIMARY);
+
+            if (interactable)
+            {
+                StartCoroutine(PlayerInteract(interactable, InteractionType.PRIMARY));
+                canAnimateInteract = false;
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && canAnimateInteract)
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            canAnimateInteract = false;
-            StartCoroutine(PlayerInteract());
-        }
+            var interactable = CanInteract(InteractionType.SECONDARY);
 
-        if (Input.GetKeyUp(KeyCode.E))
-        {
-            isPushing = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q) && !isCrouching)
-        {
-            _animator.SetTrigger("Interact");
-            isRotating = true;
-            hasInteracted = true;
-        }
-
-        if (Input.GetKeyUp(KeyCode.Q))
-        {
-            isRotating = false;
+            if (interactable)
+            {
+                StartCoroutine(PlayerInteract(interactable, InteractionType.SECONDARY));
+                canAnimateInteract = false;
+            }
         }
     }
 
@@ -234,10 +226,49 @@ public class PlayerMovement : MonoBehaviour
         _characterController.height = Mathf.Lerp(_characterController.height, targetHeight, 5f * Time.deltaTime);
         _characterController.center = Vector3.Lerp(_characterController.center, targetCenter, 5f * Time.deltaTime);
     }
-    IEnumerator PlayerInteract()
+    IEnumerator PlayerInteract(Interactable interactable, InteractionType interactionType)
     {
         _animator.SetTrigger("Interact");
+        interactable.Interact(gameObject, interactionType);
         yield return new WaitForSeconds(interactWaitTime);
         canAnimateInteract = true;
+    }
+
+    private Interactable CanInteract(InteractionType type)
+    {
+        if (!canAnimateInteract) return null;
+        
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit))
+        {
+            var interactable = hit.collider.gameObject.GetComponent<Interactable>();
+            if (interactable && hit.distance < interactDistance && interactable.CanInteract(gameObject, type))
+            {
+                return interactable;
+            }
+        }
+
+        return null;
+        
+        // var colliders = Physics.OverlapBox(transform.position + transform.forward * interactDistance,
+        //     new Vector3(_characterController.radius / 2.0f, _characterController.height / 1.5f, interactDistance));
+        //
+        // Interactable interactable = null;
+        // float minimumDistance = interactDistance;
+        // foreach (var collider in colliders)
+        // {
+        //     Vector3 direction = (collider.transform.position - transform.position).normalized;
+        //     
+        //     if (Physics.Raycast(transform.position, direction, out RaycastHit hit) &&  hit.distance < minimumDistance)
+        //     {
+        //         var foundInteractable = hit.collider.gameObject.GetComponent<Interactable>();
+        //         if (foundInteractable && foundInteractable.CanInteract(gameObject, type))
+        //         {
+        //             minimumDistance =  hit.distance;
+        //             interactable = foundInteractable;
+        //         }
+        //     }
+        // }
+        //
+        // return interactable;
     }
 }

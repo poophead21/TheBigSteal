@@ -9,11 +9,17 @@ public class ScreenTransition : MonoBehaviour
     public Vector2 offScreenEnd;
 
     [Header("Timing")]
-    public float totalDuration = 3f; // Total time for the full animation
+    [Tooltip("Delay in seconds before the transition animation begins after scene start.")]
+    public float startDelay = 1f;
+
+    [Tooltip("Total time for the full movement animation.")]
+    public float totalDuration = 3f;
 
     [Header("Easing Curves")]
     [Tooltip("Define the speed behavior over time (0 to 1).")]
-    public AnimationCurve movementCurve;
+    public float movementCurve; // Note: Ensure this is set to AnimationCurve in your inspector if needed
+
+    [SerializeField] private AnimationCurve movementCurveAsset;
 
     private RectTransform rectTransform;
 
@@ -24,12 +30,23 @@ public class ScreenTransition : MonoBehaviour
 
     void Start()
     {
-        // Start the transition automatically for testing
+        // Set initial starting position immediately on scene start so it doesn't flash on screen during the delay
+        if (rectTransform != null)
+        {
+            rectTransform.anchoredPosition = offScreenStart;
+        }
+
         StartCoroutine(TransitionRoutine());
     }
 
     IEnumerator TransitionRoutine()
     {
+        // Wait for the specified start delay before beginning movement
+        if (startDelay > 0f)
+        {
+            yield return new WaitForSeconds(startDelay);
+        }
+
         float elapsedTime = 0f;
 
         while (elapsedTime < totalDuration)
@@ -39,21 +56,19 @@ public class ScreenTransition : MonoBehaviour
             // Normalized time progresses smoothly from 0.0 to 1.0
             float t = elapsedTime / totalDuration;
 
-            // Evaluate the value from your custom curve
-            float curveValue = movementCurve.Evaluate(t);
+            // Evaluate value from custom animation curve
+            float curveValue = movementCurveAsset != null ? movementCurveAsset.Evaluate(t) : t;
 
-            // Interpolate position based on the curve value
+            // Interpolate position based on curve value
             if (curveValue < 0.5f)
             {
                 // First half: Move from off-screen to center
-                // Map curveValue (0.0 to 0.5) to a standard Lerp range (0.0 to 1.0)
                 float entryProgress = curveValue / 0.5f;
                 rectTransform.anchoredPosition = Vector2.Lerp(offScreenStart, centerScreen, entryProgress);
             }
             else
             {
                 // Second half: Move from center to off-screen end
-                // Map curveValue (0.5 to 1.0) to a standard Lerp range (0.0 to 1.0)
                 float exitProgress = (curveValue - 0.5f) / 0.5f;
                 rectTransform.anchoredPosition = Vector2.Lerp(centerScreen, offScreenEnd, exitProgress);
             }
@@ -61,7 +76,7 @@ public class ScreenTransition : MonoBehaviour
             yield return null;
         }
 
-        // Ensure it reaches the exact final destination
+        // Ensure exact final position
         rectTransform.anchoredPosition = offScreenEnd;
     }
 }
