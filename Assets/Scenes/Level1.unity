@@ -1177,6 +1177,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2245782889808693826, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2862533047719481755, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.4054
+      objectReference: {fileID: 0}
+    - target: {fileID: 2862533047719481755, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.4054
+      objectReference: {fileID: 0}
+    - target: {fileID: 2862533047719481755, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.4054
+      objectReference: {fileID: 0}
     - target: {fileID: 4173310148365429400, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1264,6 +1280,30 @@ PrefabInstance:
     - target: {fileID: 4709010191775353540, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
       propertyPath: m_Name
       value: 'IRIS SHOT '
+      objectReference: {fileID: 0}
+    - target: {fileID: 6086592413197162129, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 3e96b11d0278e2e4d9bd7c61491bcd68, type: 2}
+    - target: {fileID: 6086592413197162129, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 6573086367692012221, guid: 3e96b11d0278e2e4d9bd7c61491bcd68, type: 2}
+    - target: {fileID: 6086592413197162129, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8261855248816108830, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8261855248816108830, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417190676949857127, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
+      propertyPath: transitionDelay
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
