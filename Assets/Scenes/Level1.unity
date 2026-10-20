@@ -3895,6 +3895,10 @@ PrefabInstance:
       propertyPath: playerRef
       value: 
       objectReference: {fileID: 1213426719}
+    - target: {fileID: 7796487585839311942, guid: 1ae528bcf077c5946b3873e820b9f110, type: 3}
+      propertyPath: timeToDetect
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 7859185730431332946, guid: 1ae528bcf077c5946b3873e820b9f110, type: 3}
       propertyPath: waitTimeAtWaypoint
       value: 4

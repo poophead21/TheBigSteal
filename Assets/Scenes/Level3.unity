@@ -312,105 +312,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::IsometricCameraFollow
   target: {fileID: 1781363323}
   smoothSpeed: 3
---- !u!1001 &386226589
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 427505822032060907, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      propertyPath: m_Name
-      value: TestMirror
-      objectReference: {fileID: 0}
-    - target: {fileID: 7872023352722414953, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7872023352722414953, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7872023352722414953, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 10.23
-      objectReference: {fileID: 0}
-    - target: {fileID: 7872023352722414953, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7872023352722414953, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7872023352722414953, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7872023352722414953, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7872023352722414953, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7872023352722414953, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7872023352722414953, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 427505822032060907, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 386226592}
-    - targetCorrespondingSourceObject: {fileID: 427505822032060907, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 386226591}
-  m_SourcePrefab: {fileID: 100100000, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
---- !u!1 &386226590 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 427505822032060907, guid: 16b7fc5a7effa244d8ad3a8632358ef4, type: 3}
-  m_PrefabInstance: {fileID: 386226589}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &386226591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 386226590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2786530f0e781ea469eeac034a96dc7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObjectInteraction
-  interactDistance: 2
-  moveDistance: 2
-  moveTime: 1
-  rotateAngle: 90
-  rotateTime: 1
-  player: {fileID: 1781363322}
---- !u!114 &386226592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 386226590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 395a8b619cbd9e742936598949ef5b82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TestCheckpointProgression
-  _player: {fileID: 1781363322}
 --- !u!1 &802811472
 GameObject:
   m_ObjectHideFlags: 0
@@ -793,7 +694,7 @@ PrefabInstance:
     - target: {fileID: 856744649449587271, guid: 3ab336d6cbdf5ff4e95c3600ed7192c3, type: 3}
       propertyPath: _testBox
       value: 
-      objectReference: {fileID: 386226590}
+      objectReference: {fileID: 0}
     - target: {fileID: 8334840295374517540, guid: 3ab336d6cbdf5ff4e95c3600ed7192c3, type: 3}
       propertyPath: m_Name
       value: Door
@@ -1021,5 +922,4 @@ SceneRoots:
   - {fileID: 2056062619}
   - {fileID: 152270854}
   - {fileID: 887555764}
-  - {fileID: 386226589}
   - {fileID: 1617709820}
