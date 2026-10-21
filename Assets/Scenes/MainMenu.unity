@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DelaySound
   myAudioSource: {fileID: 18271762}
-  delayInSeconds: 3.5
+  delayInSeconds: 2.5
 --- !u!4 &22438683 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6bbf7050aba4ca140a1d3f5a580d6fcd, type: 3}
@@ -423,7 +423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdb790785e5a6224f8b719b41646d95b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneFadeIn
-  startDelay: 15
+  startDelay: 16
   fadeDuration: 1.5
 --- !u!225 &23953837
 CanvasGroup:
@@ -1653,6 +1653,135 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.02025, y: 0.0050000018, z: 0.024999999}
   m_Center: {x: 1.6320277e-15, y: -3.72529e-10, z: 0.012499999}
+--- !u!1 &227883050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 227883052}
+  - component: {fileID: 227883051}
+  m_Layer: 0
+  m_Name: buttonclick
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &227883051
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227883050}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &227883052
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227883050}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1159.2344, y: -0.00001, z: 6741.979}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &259322205
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3022,6 +3151,7 @@ GameObject:
   - component: {fileID: 474653942}
   - component: {fileID: 474653941}
   - component: {fileID: 474653940}
+  - component: {fileID: 474653943}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -3071,10 +3201,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
-    m_HighlightedColor: {r: 0.5566038, g: 0.52804387, b: 0.06038627, a: 1}
-    m_PressedColor: {r: 1, g: 0.95506537, b: 0, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_HighlightedColor: {r: 0.5566038, g: 0.52804387, b: 0.06038627, a: 0}
+    m_PressedColor: {r: 1, g: 0.95506537, b: 0, a: 0}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3125,7 +3255,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3143,6 +3273,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 474653938}
   m_CullTransparentMesh: 1
+--- !u!114 &474653943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474653938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0bd575646fe8164ca77aaa2e162c303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenTransition
+  offScreenStart: {x: 91.09998, y: 300}
+  centerScreen: {x: 91.09998, y: -66.8}
+  offScreenEnd: {x: 91.09998, y: -66.8}
+  startDelay: 16
+  totalDuration: 3
+  movementCurve: 0
+  movementCurveAsset:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.45586988
+      value: 0.9666326
+      inSlope: 0.9198893
+      outSlope: 0.9198893
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.23314999
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &486446199
 GameObject:
   m_ObjectHideFlags: 0
@@ -5226,7 +5407,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4, y: 46.4}
+  m_AnchoredPosition: {x: -110.7, y: 46.4}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &796442113
@@ -5241,9 +5422,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0bd575646fe8164ca77aaa2e162c303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScreenTransition
-  offScreenStart: {x: 0, y: 200}
-  centerScreen: {x: 4, y: 46.4}
-  offScreenEnd: {x: 4, y: 46.4}
+  offScreenStart: {x: 500, y: 46.4}
+  centerScreen: {x: -110.7, y: 46.4}
+  offScreenEnd: {x: -110.7, y: 46.4}
   startDelay: 13
   totalDuration: 5
   movementCurve: 0
@@ -6741,6 +6922,7 @@ GameObject:
   - component: {fileID: 1049790649}
   - component: {fileID: 1049790651}
   - component: {fileID: 1049790650}
+  - component: {fileID: 1049790652}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -6796,8 +6978,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278314495
-  m_fontColor: {r: 1, g: 0.8989971, b: 0.0047169924, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6867,6 +7049,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1049790648}
   m_CullTransparentMesh: 1
+--- !u!114 &1049790652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049790648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8959dfbcb7188c244adaf12a3d5a6d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverTextColorUI
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  hoverColor: {r: 1, g: 0.9203187, b: 0, a: 1}
 --- !u!4 &1062962804 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0fd71598b1f799740b769e04edbfe62d, type: 3}
@@ -8799,6 +8995,7 @@ GameObject:
   - component: {fileID: 1345255657}
   - component: {fileID: 1345255659}
   - component: {fileID: 1345255658}
+  - component: {fileID: 1345255660}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -8854,8 +9051,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8925,6 +9122,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1345255656}
   m_CullTransparentMesh: 1
+--- !u!114 &1345255660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345255656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8959dfbcb7188c244adaf12a3d5a6d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextHoverColor
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  hoverColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1001 &1348045684
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9914,6 +10125,7 @@ GameObject:
   - component: {fileID: 1483778643}
   - component: {fileID: 1483778642}
   - component: {fileID: 1483778641}
+  - component: {fileID: 1483778644}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -9938,7 +10150,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 91.7, y: -41.1}
+  m_AnchoredPosition: {x: 91.7, y: -40.4}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1483778641
@@ -9963,14 +10175,14 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
-    m_HighlightedColor: {r: 1, g: 0.8357143, b: 0, a: 1}
-    m_PressedColor: {r: 1, g: 0.91978294, b: 0.0047169924, a: 0}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 0}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 0}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: b3d3ef213ff00b644a53e577eb1dfcc0, type: 3}
     m_PressedSprite: {fileID: 0}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
@@ -9988,6 +10200,18 @@ MonoBehaviour:
       - m_Target: {fileID: 2084619475}
         m_TargetAssemblyTypeName: ManageScenes, Assembly-CSharp
         m_MethodName: LoadNextLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 227883051}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10017,7 +10241,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10035,6 +10259,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1483778639}
   m_CullTransparentMesh: 1
+--- !u!114 &1483778644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483778639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0bd575646fe8164ca77aaa2e162c303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenTransition
+  offScreenStart: {x: 91.7, y: 300}
+  centerScreen: {x: 91.7, y: -40.4}
+  offScreenEnd: {x: 91.7, y: -40.4}
+  startDelay: 15.5
+  totalDuration: 3
+  movementCurve: 0
+  movementCurveAsset:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.42759407
+      value: 0.9542073
+      inSlope: 0.72392356
+      outSlope: 0.72392356
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.20818883
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1486822025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10921,7 +11196,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.9, y: 12.1}
+  m_AnchoredPosition: {x: -81.2, y: 12.1}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1634434973
@@ -10936,9 +11211,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0bd575646fe8164ca77aaa2e162c303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScreenTransition
-  offScreenStart: {x: 0, y: 200}
-  centerScreen: {x: 2.9, y: 12.1}
-  offScreenEnd: {x: 2.9, y: 12.1}
+  offScreenStart: {x: 500, y: 12.1}
+  centerScreen: {x: -81.2, y: 12.1}
+  offScreenEnd: {x: -81.2, y: 12.1}
   startDelay: 14.5
   totalDuration: 3
   movementCurve: 0
@@ -14648,7 +14923,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -882, y: -82.3}
+  m_AnchoredPosition: {x: -882, y: -82}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &2094141827
@@ -14723,7 +14998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c3e19dde11256640bead0856be14d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveRight
-  speed: 725
+  speed: 720
 --- !u!1001 &2103095412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14946,3 +15221,4 @@ SceneRoots:
   - {fileID: 1749825154}
   - {fileID: 886897791}
   - {fileID: 18271763}
+  - {fileID: 227883052}
