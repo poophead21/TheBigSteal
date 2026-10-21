@@ -23,6 +23,11 @@ public class Button : Interactable
         doorScript  = door.GetComponent<Door>();
     }
 
+    private void Start()
+    {
+        ButtonIsInteractable();
+    }
+
     IEnumerator Interact()
     {
         _animation.Play();

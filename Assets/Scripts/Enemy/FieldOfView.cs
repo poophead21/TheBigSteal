@@ -173,7 +173,7 @@ public class FieldOfView : MonoBehaviour
         if (isCaught) return;
         isCaught = true;
 
-        Debug.Log("Player cock");
+        Debug.Log("Player caught, because Mrs Russian Spy is boring >:(");
 
         if (PlayDeathTransition.Instance != null)
         {
