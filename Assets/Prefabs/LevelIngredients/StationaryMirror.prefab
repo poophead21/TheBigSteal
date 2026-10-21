@@ -322,6 +322,8 @@ MonoBehaviour:
   moveTime: 1
   rotateAngle: 90
   rotateTime: 1
+  pushable: 0
+  rotatable: 1
   meshrenderer: {fileID: 0}
   UICanvas: {fileID: 0}
   outline: {fileID: 0}
