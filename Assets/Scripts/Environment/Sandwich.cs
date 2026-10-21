@@ -11,9 +11,9 @@ public class Sandwich : Interactable
     {
         if (Application.isEditor)
         {
-            #if !UNITY_STANDALONE
+#if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false; 
-            #endif
+#endif
         }
         else
         {
