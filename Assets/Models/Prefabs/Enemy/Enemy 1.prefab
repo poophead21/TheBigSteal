@@ -564,8 +564,8 @@ MonoBehaviour:
   footstepAudioSource: {fileID: 9181646241208946689}
   sfxAudioSource: {fileID: 0}
   footstepClip: {fileID: 8300000, guid: 2675e1bb3f1bde241a47183a0d284e58, type: 3}
-  alertSoundClip: {fileID: 8300000, guid: 248c9935b7e56d54196ab6d208d13a9e, type: 3}
-  chaseSoundClip: {fileID: 8300000, guid: 29a4bcf86b0fa924e8d1dc7d60c0179c, type: 3}
+  alertSoundClip: {fileID: 8300000, guid: d268a367038c8fd4ea019b2cf303209c, type: 3}
+  chaseSoundClip: {fileID: 8300000, guid: 7280e3154ebb0e4468c4a17044001896, type: 3}
 --- !u!82 &9181646241208946689
 AudioSource:
   m_ObjectHideFlags: 0
