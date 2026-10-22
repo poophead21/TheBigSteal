@@ -38,6 +38,7 @@ public class FadeManager : MonoBehaviour
     {
         if (automaticallyFadeInOnSceneLoad)
         {
+            Debug.Log("Start fade");
             DoFade(fadeStartAlpha, fadeEndAlpha, fadeDuration, fadeDelayBeforeFade);
         }
     }
