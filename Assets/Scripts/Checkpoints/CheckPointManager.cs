@@ -23,7 +23,7 @@ public class CheckPointManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -51,13 +51,15 @@ public class CheckPointManager : MonoBehaviour
 
     public void LoadCheckpoint()
     {
-        Debug.Log("Loading checkpoint");
+        //Debug.Log("Loading checkpoint");
         for (int i = triggerCheckpoints.Length - 1; i >= 0; i--)
         {
             if (triggerCheckpoints[i] != null && triggerCheckpoints[i].isTriggered == true)
             {
+                Debug.Log("OnCheckPointActivated?.Invoke();");
                 playerController.enabled = false;
-                player.position = triggerCheckpoints[i].transform.position;
+                //player.position = triggerCheckpoints[i].transform.position;
+                player.position = new Vector3(triggerCheckpoints[i].transform.position.x, 1, player.position.z);
                 playerController.enabled = true;
                 
                 OnCheckPointActivated?.Invoke();

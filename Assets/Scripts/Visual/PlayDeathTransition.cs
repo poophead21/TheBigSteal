@@ -20,6 +20,7 @@ public class PlayDeathTransition : MonoBehaviour
     [Header("Transition Settings")]
     [SerializeField] private float transitionDelay = 1.0f; // Duration of closing iris/fade
     [SerializeField] private bool playIrisOpenOnSceneStart = true;
+    [SerializeField] private float timeBetweenAnimations = 0.3f;
 
     private bool isTransitioning = false;
 
@@ -57,8 +58,10 @@ public class PlayDeathTransition : MonoBehaviour
 
     public void PlayIrisOpen()
     {
+        Debug.Log("PlayIrisOpen");
         if (deathAnimation != null && !string.IsNullOrEmpty(irisOpenClipName))
         {
+            Debug.Log("deathAnimation.Play(irisOpenClipName);");
             deathAnimation.Play(irisOpenClipName);
         }
     }
@@ -79,6 +82,7 @@ public class PlayDeathTransition : MonoBehaviour
         // 2. Set text message & fade it in
         if (transitionText != null)
         {
+            transitionText.enabled = true;
             transitionText.text = deathMessage;
         }
 
@@ -89,10 +93,10 @@ public class PlayDeathTransition : MonoBehaviour
         }
 
         // 4. Trigger screen fade and text fade-in
-        if (FadeManager.Instance != null)
+        /*if (FadeManager.Instance != null)
         {
             FadeManager.Instance.DoFade(0f, 1f, transitionDelay, 0f); 
-        }
+        }*/
 
         float timer = 0f;
         while (timer < transitionDelay)
@@ -104,10 +108,18 @@ public class PlayDeathTransition : MonoBehaviour
             }
             yield return null;
         }
+        yield return new WaitForSeconds(timeBetweenAnimations);
+        transitionText.enabled = false;
+        EnablePlayerControls();
+        
+        //open iris
+        if (deathAnimation != null && !string.IsNullOrEmpty(irisOpenClipName))
+        {
+            Debug.Log("deathAnimation.Play(irisOpenClipName);");
+            deathAnimation.Play(irisOpenClipName);
+        }
 
-        // 5. Reload active scene
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+        isTransitioning = false;
     }
 
     private void DisablePlayerControls()
@@ -125,6 +137,31 @@ public class PlayDeathTransition : MonoBehaviour
         if (cc != null)
         {
             cc.enabled = false;
+        }
+
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.isKinematic = true;
+        }
+    }
+
+    private void EnablePlayerControls()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
+
+        PlayerController controllerScript = player.GetComponent<PlayerController>();
+        if (controllerScript != null)
+        {
+            controllerScript.enabled = true;
+        }
+
+        CharacterController cc = player.GetComponent<CharacterController>();
+        if (cc != null)
+        {
+            cc.enabled = true;
         }
 
         Rigidbody rb = player.GetComponent<Rigidbody>();

@@ -192,28 +192,31 @@ public class FieldOfView : MonoBehaviour
         {
             Debug.Log("if");
             PlayDeathTransition.Instance.TriggerDeathSequence();
-            _checkPointManager.LoadCheckpoint();
+            DoCheckPoint();
             isCaught = false;
 
         }
         else
         {
             Debug.Log("else");
-
-            _checkPointManager.LoadCheckpoint();
-            canSeePlayer = false;
-            isPlayerDetected = false;
-            _enemyController.AbandonSearchAndPatrol();
-            isCaught = false;
-            _enemyController.StopChaseState();
-            _enemyPatrol.ResetPatrolToStart();
-            agent.speed = _enemyController.patrolSpeed;
-
+            DoCheckPoint();
 
             // Fallback direct reload if transition script is missing
             /*int currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
             UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneIndex);*/
         }
+    }
+
+    private void DoCheckPoint()
+    {
+        _checkPointManager.LoadCheckpoint();
+        canSeePlayer = false;
+        isPlayerDetected = false;
+        _enemyController.AbandonSearchAndPatrol();
+        isCaught = false;
+        _enemyController.StopChaseState();
+        _enemyPatrol.ResetPatrolToStart();
+        agent.speed = _enemyController.patrolSpeed;
     }
 
 

@@ -123,7 +123,6 @@ public class ObjectInteractable : Interactable
         {
             isBeingInteractedWith = false;
         }
-        
         //UI component
         SetOutline(true);
         UICanvas.SetActive(true);
