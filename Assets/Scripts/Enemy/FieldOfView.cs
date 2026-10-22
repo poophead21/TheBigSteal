@@ -42,6 +42,9 @@ public class FieldOfView : MonoBehaviour
     public bool canSeePlayer;
     public bool isPlayerDetected;
     public float detectionTimer = 0f;
+    
+    //Checkpoint connection
+    private CheckPointManager _checkPointManager;
 
     public Vector3 GetEyePosition()
     {
@@ -51,6 +54,7 @@ public class FieldOfView : MonoBehaviour
 
     private void Start()
     {
+        _checkPointManager = GameObject.FindGameObjectWithTag("CheckPointManager").GetComponent<CheckPointManager>();
         playerRef = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(FOVRoutine());
     }
@@ -181,9 +185,10 @@ public class FieldOfView : MonoBehaviour
         }
         else
         {
+            _checkPointManager.LoadCheckpoint();
             // Fallback direct reload if transition script is missing
-            int currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneIndex);
+            /*int currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneIndex);*/
         }
     }
 

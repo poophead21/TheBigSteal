@@ -337,6 +337,7 @@ GameObject:
   - component: {fileID: 7859185730431332946}
   - component: {fileID: 5721690498702414151}
   - component: {fileID: 9181646241208946689}
+  - component: {fileID: 874293338635415782}
   m_Layer: 0
   m_Name: Enemy 1
   m_TagString: Untagged
@@ -352,7 +353,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3696082695186093127}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.706031, z: -0, w: 0.7081809}
+  m_LocalRotation: {x: 0, y: 0.70603234, z: 0, w: 0.70817965}
   m_LocalPosition: {x: -17.79, y: 3, z: 0.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -509,13 +510,13 @@ MonoBehaviour:
   eyeHeight: 0.8
   standingTargetHeight: 1
   crouchingTargetHeight: 0.4
-  proximityAlertRadius: 2.6
+  proximityAlertRadius: 2
   killRadius: 1.23
   timeToDetect: 1
   playerRef: {fileID: 0}
   canSeePlayer: 0
   isPlayerDetected: 0
-  detectionTimer: 4
+  detectionTimer: 2.3
 --- !u!114 &7859185730431332946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,6 +530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatrol
   waypoints:
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -550,6 +552,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   chaseSpeed: 6.47
   patrolSpeed: 2
+  memoryDuration: 1.5
   hesitationDelay: 1.5
   investigationDuration: 6
   turnSpeed: 48.2
@@ -585,7 +588,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 3
-  MaxDistance: 15
+  MaxDistance: 15.040729
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -660,6 +663,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &874293338635415782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696082695186093127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 425074eb6124a0a48b68dc86dc65047d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemCheckpoint
+  correctRotation: {x: 0, y: 0, z: 0}
+  correctLocation: {x: 0, y: 0, z: 0}
+  positionLimit: 0.1
 --- !u!1 &6278587076913389220
 GameObject:
   m_ObjectHideFlags: 0
