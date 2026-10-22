@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6836c4dfe29a14c448914ebf115d5685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectHiderCamera
-  player: {fileID: 0}
+  player: {fileID: 7872574951810148740}
 --- !u!1 &6535440658817037984
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,7 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cdc4a7df7074dd43a6189292e1ca8ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IsometricCameraFollow
-  target: {fileID: 0}
+  target: {fileID: 4319239932181131366}
   smoothSpeed: 3
 --- !u!1001 &7515617293309974287
 PrefabInstance:
