@@ -47,16 +47,7 @@ public class ItemCheckpoint : MonoBehaviour
     }
     private void ResetEnemies()
     {
-        float distance = Vector3.Distance(startLocation, transform.position);
-        if (distance <= positionLimit)
-        {
-            transform.position = correctLocation;
-            transform.rotation = startRotation;
-        }
-        else
-        {
-            transform.position = startLocation;
-            transform.rotation = startRotation;
-        }
+        transform.position = startLocation;
+        transform.rotation = startRotation;
     }
 }

@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float chaseSpeed = 5f;
-    [SerializeField] private float patrolSpeed = 3.5f;
+    [SerializeField] public float patrolSpeed = 3.5f;
 
     [Header("Memory & Awareness Settings")]
     [Tooltip("How long (in seconds) the guard retains active awareness of the player's position after losing sight.")]
@@ -324,7 +324,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void StopChaseState()
+    public void StopChaseState()
     {
         if (isCurrentlyChasing)
         {
@@ -334,7 +334,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void AbandonSearchAndPatrol()
+    public void AbandonSearchAndPatrol()
     {
         StopChaseState();
 

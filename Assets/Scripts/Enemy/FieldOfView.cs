@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement; // Required for reloading the scene
 
 public class FieldOfView : MonoBehaviour
@@ -45,6 +46,9 @@ public class FieldOfView : MonoBehaviour
     
     //Checkpoint connection
     private CheckPointManager _checkPointManager;
+    private EnemyController _enemyController;
+    private NavMeshAgent agent;
+    private EnemyPatrol _enemyPatrol;
 
     public Vector3 GetEyePosition()
     {
@@ -56,6 +60,11 @@ public class FieldOfView : MonoBehaviour
     {
         _checkPointManager = GameObject.FindGameObjectWithTag("CheckPointManager").GetComponent<CheckPointManager>();
         playerRef = GameObject.FindGameObjectWithTag("Player");
+        _enemyController = GetComponent<EnemyController>();
+        _enemyPatrol = GetComponent<EnemyPatrol>();
+        
+        agent = GetComponent<NavMeshAgent>();
+        
         StartCoroutine(FOVRoutine());
     }
 
@@ -181,11 +190,26 @@ public class FieldOfView : MonoBehaviour
 
         if (PlayDeathTransition.Instance != null)
         {
+            Debug.Log("if");
             PlayDeathTransition.Instance.TriggerDeathSequence();
+            _checkPointManager.LoadCheckpoint();
+            isCaught = false;
+
         }
         else
         {
+            Debug.Log("else");
+
             _checkPointManager.LoadCheckpoint();
+            canSeePlayer = false;
+            isPlayerDetected = false;
+            _enemyController.AbandonSearchAndPatrol();
+            isCaught = false;
+            _enemyController.StopChaseState();
+            _enemyPatrol.ResetPatrolToStart();
+            agent.speed = _enemyController.patrolSpeed;
+
+
             // Fallback direct reload if transition script is missing
             /*int currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
             UnityEngine.SceneManagement.SceneManager.LoadScene(currentSceneIndex);*/
