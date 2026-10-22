@@ -6,6 +6,8 @@ public class Button : Interactable
 {
     private bool canInteract;
     private bool triggered;
+
+    public bool interactOnStart;
     
     [SerializeField] private Material shiningMaterial;
     [SerializeField] private GameObject buttonTop;
@@ -25,7 +27,10 @@ public class Button : Interactable
 
     private void Start()
     {
-        ButtonIsInteractable();
+        if (interactOnStart)
+        {
+            ButtonIsInteractable();
+        }
     }
 
     IEnumerator Interact()

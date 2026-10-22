@@ -11,6 +11,8 @@ public class ObjectInteractable : Interactable
     [SerializeField] private float moveTime = 1.0f;
     [SerializeField] private float rotateAngle = 90.0f;
     [SerializeField] private float rotateTime = 1.0f;
+    [SerializeField] private bool pushable = true;
+    [SerializeField] private bool rotatable = true;
     private PlayerController playerController;
     
     private const float EPSILON = 0.0001f;
@@ -95,7 +97,7 @@ public class ObjectInteractable : Interactable
 
     private void StartPushing(Vector3 playerToObject)
     {
-        audioManager.GetAudioClip(0);
+        audioManager.GetAudioClip("StoneMoving");
         interactionType = InteractionType.PRIMARY;
         moveTo = transform.position + DeterminePushingDirection(playerToObject) * moveDistance;
     }
@@ -136,6 +138,8 @@ public class ObjectInteractable : Interactable
 
     private bool CanPush(Vector3 playerToObject)
     {
+        if (!pushable) return false;
+        
         Vector3 direction = DeterminePushingDirection(playerToObject);
         // assuming the collider is centered and square on the xz plane
         Vector3 origin = transform.position + (_collider.size.x / 2.0f * transform.localScale.x + EPSILON) * direction; 
@@ -149,7 +153,7 @@ public class ObjectInteractable : Interactable
         switch (interactionType)
         {
             case InteractionType.PRIMARY: return CanPush(transform.position - interactor.transform.position);
-            case InteractionType.SECONDARY: return true;
+            case InteractionType.SECONDARY: return rotatable;
         }
 
         return false;
@@ -167,7 +171,7 @@ public class ObjectInteractable : Interactable
         }
         else if (interactionType == InteractionType.SECONDARY)
         {
-            audioManager.GetAudioClip(0);
+            audioManager.GetAudioClip("StoneMoving");
             rotateTo = transform.rotation * quaternion.RotateY(rotateAngle / 180 * Mathf.PI);
         }
     }

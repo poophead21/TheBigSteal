@@ -9,15 +9,8 @@ public class Sandwich : Interactable
 
     public override void Interact(GameObject interactor, InteractionType interactionType)
     {
-        if (Application.isEditor)
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false; 
-#endif
-        }
-        else
-        {
-            Application.Quit();
-        }
+        Debug.Log("Sandwich interacted");
+        ManageScenes.Instance.LoadNextLevel();
     }
+    
 }
