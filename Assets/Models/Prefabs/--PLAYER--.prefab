@@ -232,8 +232,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   interactDistance: 2
-  speed: 5
-  rotationSpeed: 1000
+  speed: 3
+  rotationSpeed: 850
   cameraTransform: {fileID: 5942114105746024873}
   gravity: 9.18
   stickToGroundVelocity: -2
