@@ -242,6 +242,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MusicManager
   chaseMusicClip: {fileID: 8300000, guid: 29a4bcf86b0fa924e8d1dc7d60c0179c, type: 3}
   sneakMusicClip: {fileID: 8300000, guid: 797d1d8399302244dbf5d4717c6e920e, type: 3}
+  winMusicClip: {fileID: 8300000, guid: fb6cdf62be0f78342bf2ec876048515f, type: 3}
   fadeDuration: 1
   chaseMaxVolume: 0.7
   sneakMaxVolume: 0.7
+  winMaxVolume: 0.7

@@ -20,7 +20,9 @@ public class PlayDeathTransition : MonoBehaviour
     [Header("Transition Settings")]
     [SerializeField] private float transitionDelay = 1.0f; // Duration of closing iris/fade
     [SerializeField] private bool playIrisOpenOnSceneStart = true;
-
+        
+    private AudioManager audioManager;
+    
     private bool isTransitioning = false;
 
     private void Awake()
@@ -53,6 +55,8 @@ public class PlayDeathTransition : MonoBehaviour
         {
             PlayIrisOpen();
         }
+        
+        audioManager = GameObject.Find("SoundManager").GetComponent<AudioManager>();
     }
 
     public void PlayIrisOpen()
@@ -66,6 +70,12 @@ public class PlayDeathTransition : MonoBehaviour
     public void TriggerDeathSequence()
     {
         if (isTransitioning) return;
+        
+        if (audioManager)
+            audioManager.PlayAudioClip(Sound.PlayerCaught);
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.StopMusic();
+        
         StartCoroutine(DeathSequenceRoutine());
     }
 

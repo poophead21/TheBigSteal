@@ -97,7 +97,7 @@ public class ObjectInteractable : Interactable
 
     private void StartPushing(Vector3 playerToObject)
     {
-        audioManager.GetAudioClip("StoneMoving");
+        audioManager.PlayAudioClip(Sound.WoodScrape);
         interactionType = InteractionType.PRIMARY;
         moveTo = transform.position + DeterminePushingDirection(playerToObject) * moveDistance;
     }
@@ -171,7 +171,7 @@ public class ObjectInteractable : Interactable
         }
         else if (interactionType == InteractionType.SECONDARY)
         {
-            audioManager.GetAudioClip("StoneMoving");
+            audioManager.PlayAudioClip(Sound.WoodScrape);
             rotateTo = transform.rotation * quaternion.RotateY(rotateAngle / 180 * Mathf.PI);
         }
     }

@@ -11,6 +11,7 @@ public class MusicManager : MonoBehaviour
     [Header("Audio Tracks")]
     [SerializeField] private AudioClip chaseMusicClip;
     [SerializeField] private AudioClip sneakMusicClip;
+    [SerializeField] private AudioClip winMusicClip;
 
     [Header("Fade Settings")]
     [SerializeField] private float fadeDuration = 0.5f;
@@ -19,9 +20,15 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private float chaseMaxVolume = 0.7f;
     [Range(0f, 1f)]
     [SerializeField] private float sneakMaxVolume = 0.7f;
+    [Range(0f, 1f)]
+    [SerializeField] private float winMaxVolume = 0.7f;
 
     private AudioSource sneakAudioSource;
     private AudioSource chaseAudioSource;
+    
+    private AudioSource activeSource;
+    private AudioSource nonActiveSource;
+    
     private Coroutine chaseSourceCoroutine;
     private Coroutine sneakSourceCoroutine;
     private int chasingEnemiesCount = 0;
@@ -52,6 +59,9 @@ public class MusicManager : MonoBehaviour
         sneakAudioSource.clip = sneakMusicClip;
         sneakAudioSource.volume = sneakMaxVolume;
         sneakAudioSource.Play();
+
+        activeSource = sneakAudioSource;
+        nonActiveSource = chaseAudioSource;
     }
 
     public void ReportChaseState(bool isChasing)
@@ -61,7 +71,6 @@ public class MusicManager : MonoBehaviour
             chasingEnemiesCount++;
             if (chasingEnemiesCount == 1)
             {
-                print("START CHASE MUSIC");
                 // First enemy started chasing -> Fade in chase music
                 StartFade(chaseAudioSource, chaseMaxVolume);
                 StartFade(sneakAudioSource, 0f);
@@ -72,12 +81,23 @@ public class MusicManager : MonoBehaviour
             chasingEnemiesCount = Mathf.Max(0, chasingEnemiesCount - 1);
             if (chasingEnemiesCount == 0)
             {
-                print("START SNEAK MUSIC");
                 // All enemies stopped chasing -> Fade out music
                 StartFade(chaseAudioSource, 0f);
                 StartFade(sneakAudioSource, sneakMaxVolume);
             }
         }
+    }
+
+    public void PlayWinMusic()
+    {
+        StopMusic();
+        nonActiveSource.clip = winMusicClip;
+        StartFade(nonActiveSource, winMaxVolume);
+    }
+
+    public void StopMusic()
+    {
+        StartFade(activeSource, 0f);
     }
 
     private void StartFade(AudioSource source, float targetVolume)
@@ -89,7 +109,7 @@ public class MusicManager : MonoBehaviour
         }
         else
         {
-            if(sneakSourceCoroutine != null) StopCoroutine(sneakSourceCoroutine);
+            if (sneakSourceCoroutine != null) StopCoroutine(sneakSourceCoroutine);
             sneakSourceCoroutine = StartCoroutine(FadeMusic(source, targetVolume));
         }
     }
@@ -99,6 +119,7 @@ public class MusicManager : MonoBehaviour
         if (targetVolume > 0f && !source.isPlaying)
         {
             source.Play();
+            activeSource = source;
         }
 
         float startVolume = source.volume;

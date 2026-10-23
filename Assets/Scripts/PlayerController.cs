@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     private CharacterController _characterController;
     private Animator _animator;
+    private AudioManager _audioManager;
     
     [SerializeField] private float interactDistance = 2.0f;
     
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        _audioManager = GameObject.Find("SoundManager").GetComponent<AudioManager>();
         
         baseSpeed = speed;
         
@@ -126,8 +128,11 @@ public class PlayerController : MonoBehaviour
         {
             movementDirection = Vector3.zero;
             movement = movementDirection * speed;
+            _audioManager.StopPlayingAudioClip(Sound.Footsteps);
             return;
         }
+        
+        _audioManager.StartPlayingAudioClip(Sound.Footsteps);
         movementDirection.Normalize();
         
         Quaternion targetRotation = Quaternion.LookRotation(movementDirection);
