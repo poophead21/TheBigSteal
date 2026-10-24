@@ -54,9 +54,19 @@ public class CheckPointManager : MonoBehaviour
     }
 
     public void LoadCheckpoint()
-    {
-        //Debug.Log("Loading checkpoint");
-        StartCoroutine(TeleportPlayer());
+    { 
+        for (int i = triggerCheckpoints.Length - 1; i >= 0; i--)
+        {
+            if (triggerCheckpoints[i] != null && triggerCheckpoints[i].isTriggered)
+            {
+                playerController.enabled = false;
+                player.position = new Vector3(triggerCheckpoints[i].transform.position.x,triggerCheckpoints[i].transform.position.y + 1, triggerCheckpoints[i].transform.position.z);
+                playerController.enabled = true;
+                
+                OnCheckPointActivated?.Invoke();
+                break;
+            }
+        }
 
         bool disabled = false;
         for (int i = triggerCheckpoints.Length - 1; i >= 0; i--)
@@ -70,32 +80,18 @@ public class CheckPointManager : MonoBehaviour
 
         if (!disabled)
         {
-            StartCoroutine(TeleportPlayerToStart());
+            playerController.enabled = false;
+            player.position = playerStartPosition;
+            playerController.enabled = true;
         }
     }
 
-    IEnumerator TeleportPlayerToStart()
+   /* IEnumerator TeleportPlayerToStart()
     {
-        playerController.enabled = false;
-        yield return new WaitForSeconds(waitBeforeTeleport);
-        player.position = playerStartPosition;
-        playerController.enabled = true;
+        
     }
     IEnumerator TeleportPlayer()
     {
-        for (int i = triggerCheckpoints.Length - 1; i >= 0; i--)
-        {
-            if (triggerCheckpoints[i] != null && triggerCheckpoints[i].isTriggered)
-            {
-                playerController.enabled = false;
-                yield return new WaitForSeconds(waitBeforeTeleport);
-                player.position = new Vector3(triggerCheckpoints[i].transform.position.x, 1, player.position.z);
-                playerController.enabled = true;
-                
-                OnCheckPointActivated?.Invoke();
-                break;
-            }
-        }
         
-    }
+    }*/
 }
