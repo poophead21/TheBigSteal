@@ -45,11 +45,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa8ef19ffdbf50d48b5ab0ee39b2c26e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  audioClips:
-  - {fileID: 8300000, guid: 428149780c06b6f42b06e42ad2c38876, type: 3}
-  - {fileID: 8300000, guid: 9ed38dce7ef0c2d41931f9513998c903, type: 3}
-  - {fileID: 8300000, guid: 49995f8eb1b3e754fb10d4c8a5ebd6e3, type: 3}
-  - {fileID: 8300000, guid: e5ea546d5e4f1554486740612bb410eb, type: 3}
+  audioClipsKeys: 000000000100000002000000030000000400000005000000060000000700000008000000
+  audioClipsValues:
+  - clip: {fileID: 8300000, guid: 428149780c06b6f42b06e42ad2c38876, type: 3}
+    delay: 0
+    volume: 1
+  - clip: {fileID: 8300000, guid: 561f0f2ef020c2a4c8c1700aef3f4037, type: 3}
+    delay: 0
+    volume: 1
+  - clip: {fileID: 8300000, guid: 49995f8eb1b3e754fb10d4c8a5ebd6e3, type: 3}
+    delay: 0
+    volume: 0.4
+  - clip: {fileID: 8300000, guid: fe16ea5cdb9d2f740a74324b76f5d479, type: 3}
+    delay: 1
+    volume: 0.4
+  - clip: {fileID: 8300000, guid: 9ed38dce7ef0c2d41931f9513998c903, type: 3}
+    delay: 0
+    volume: 0.4
+  - clip: {fileID: 8300000, guid: 7800d97d1d44076469d6b3ca92b5926a, type: 3}
+    delay: 0
+    volume: 0.5
+  - clip: {fileID: 8300000, guid: dd79ed08f3b06564e8d62fa1b5d7febd, type: 3}
+    delay: 0
+    volume: 1
+  - clip: {fileID: 8300000, guid: 0034811c9064f2e4d952a262be7d104e, type: 3}
+    delay: 0
+    volume: 1
+  - clip: {fileID: 8300000, guid: 50dced6264ab4e2439e7140f3861ec2b, type: 3}
+    delay: 0
+    volume: 1
 --- !u!82 &260684104578174563
 AudioSource:
   m_ObjectHideFlags: 0
