@@ -50,6 +50,10 @@ public class FadeManager : MonoBehaviour
             StopCoroutine(fadeCoroutine);
         }
         fadeCoroutine = StartCoroutine(AnimateFade(startAlpha, endAlpha, duration, delayBeforeFade));*/
+        if (canvasGroup == null)
+        {
+            return;
+        }
         StartCoroutine(AnimateFade(startAlpha, endAlpha, duration, delayBeforeFade));
     }
 

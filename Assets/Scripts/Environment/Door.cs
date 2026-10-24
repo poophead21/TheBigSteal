@@ -34,7 +34,10 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("trigg entered");
-        ManageScenes.Instance.LoadNextLevel();
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("door entered");
+            ManageScenes.Instance.LoadNextLevel();
+        }
     }
 }

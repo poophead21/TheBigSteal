@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ItemCheckpoint : MonoBehaviour
@@ -32,22 +33,34 @@ public class ItemCheckpoint : MonoBehaviour
 
     private void ResetItems()
     {
+        Debug.Log("Reset Items");
         float distance = Vector3.Distance(startLocation, transform.position);
         if (distance <= positionLimit)
         {
-            transform.position = correctLocation;
-            transform.rotation = Quaternion.Euler(correctRotation);
+            StartCoroutine(SetCorrectLocation());
+            
         }
         else
         {
-            transform.position = startLocation;
-            transform.rotation = startRotation;
+            StartCoroutine(SetStartLocation());
         }
         
     }
     private void ResetEnemies()
     {
+        StartCoroutine(SetStartLocation());
+    }
+
+    IEnumerator SetCorrectLocation()
+    {
+        transform.position = correctLocation;
+        transform.rotation = Quaternion.Euler(correctRotation);
+        yield return new WaitForSeconds(1f);
+    }
+    IEnumerator SetStartLocation()
+    {
         transform.position = startLocation;
         transform.rotation = startRotation;
+        yield return new WaitForSeconds(1f);
     }
 }
