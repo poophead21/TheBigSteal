@@ -309,7 +309,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 543a6404c84ae634c96c065d0a10198c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 29ed30527d1f1924abfd51e7938c523b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -565,7 +565,7 @@ MonoBehaviour:
   sfxAudioSource: {fileID: 0}
   footstepClip: {fileID: 8300000, guid: 2675e1bb3f1bde241a47183a0d284e58, type: 3}
   alertSoundClip: {fileID: 8300000, guid: d268a367038c8fd4ea019b2cf303209c, type: 3}
-  chaseSoundClip: {fileID: 8300000, guid: 7280e3154ebb0e4468c4a17044001896, type: 3}
+  chaseSoundClip: {fileID: 0}
 --- !u!82 &9181646241208946689
 AudioSource:
   m_ObjectHideFlags: 0

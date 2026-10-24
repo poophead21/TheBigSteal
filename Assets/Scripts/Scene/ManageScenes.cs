@@ -46,14 +46,23 @@ public class ManageScenes : MonoBehaviour
     {
         StartCoroutine(FadeOutThenLoadNewScene());
     }
+    
+    public void UnloadLevel()
+    {
+        StartCoroutine(FadeOut());
+    }
 
     private IEnumerator FadeOutThenLoadNewScene()
     {
-        FadeManager.Instance.DoFade(0,1,1,0);
-        yield return new WaitForSeconds(1);
+        yield return FadeOut();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         FadeManager.Instance.DoFade(1,0,1,0);
-
+    }
+    
+    private IEnumerator FadeOut()
+    {
+        FadeManager.Instance.DoFade(0,1,1,0);
+        yield return new WaitForSeconds(1);
     }
 
     /*public void LoadCutScene()
