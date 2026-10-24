@@ -2,6 +2,8 @@ using System;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 
 public class ObjectInteractable : Interactable
@@ -28,6 +30,9 @@ public class ObjectInteractable : Interactable
     //UI related
     [SerializeField] private MeshRenderer meshrenderer;
     [SerializeField] private GameObject UICanvas;
+    [SerializeField] private GameObject rotateImage;
+    [SerializeField] private GameObject moveImage;
+    [SerializeField] private GameObject RotateAndMoveImage;
     [SerializeField] private Outline outline;
     
     private AudioManager audioManager;
@@ -126,6 +131,31 @@ public class ObjectInteractable : Interactable
         //UI component
         SetOutline(true);
         UICanvas.SetActive(true);
+
+        if (pushable && rotatable)
+        {
+            rotateImage.SetActive(false);
+            moveImage.SetActive(false);
+            RotateAndMoveImage.SetActive(true);
+        }
+        else if (pushable && !rotatable)
+        {
+            rotateImage.SetActive(false);
+            moveImage.SetActive(true);
+            RotateAndMoveImage.SetActive(false);
+        }
+        else if (!pushable && rotatable)
+        {
+            rotateImage.SetActive(true);
+            moveImage.SetActive(false);
+            RotateAndMoveImage.SetActive(false);
+        }
+        else
+        {
+            rotateImage.SetActive(false);
+            moveImage.SetActive(false);
+            RotateAndMoveImage.SetActive(false);
+        }
     }
 
     private void OnTriggerExit(Collider other)

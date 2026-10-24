@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Sandwich : Interactable
 {
@@ -19,8 +20,9 @@ public class Sandwich : Interactable
     public override void Interact(GameObject interactor, InteractionType interactionType)
     {
         Debug.Log("Sandwich interacted");
+        ManageScenes.Instance.LoadNextLevel();
 
-        StartCoroutine(EndSequence());
+        //StartCoroutine(EndSequence());
     }
 
     private IEnumerator EndSequence()
