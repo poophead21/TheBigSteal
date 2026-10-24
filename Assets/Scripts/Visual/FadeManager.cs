@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class FadeManager : MonoBehaviour
 {
     public static FadeManager Instance;
-
     
+    private GameObject fadeCanvas;
     [SerializeField] private Image fadeImage;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private bool automaticallyFadeInOnSceneLoad;
@@ -36,20 +36,24 @@ public class FadeManager : MonoBehaviour
 
     private void Start()
     {
+        GetObjects();
         if (automaticallyFadeInOnSceneLoad)
         {
             Debug.Log("Start fade");
             DoFade(fadeStartAlpha, fadeEndAlpha, fadeDuration, fadeDelayBeforeFade);
         }
     }
+
+    private void GetObjects()
+    {
+        fadeCanvas = GameObject.FindWithTag("FadeCanvas");
+        fadeImage = fadeCanvas.GetComponent<Image>();
+        canvasGroup = fadeCanvas.GetComponent<CanvasGroup>();
+    }
     
     public void DoFade(float startAlpha, float endAlpha, float duration, float delayBeforeFade)
     {
-        /*if (fadeCoroutine != null)
-        {
-            StopCoroutine(fadeCoroutine);
-        }
-        fadeCoroutine = StartCoroutine(AnimateFade(startAlpha, endAlpha, duration, delayBeforeFade));*/
+        GetObjects();
         if (canvasGroup == null)
         {
             return;
@@ -59,6 +63,7 @@ public class FadeManager : MonoBehaviour
 
     private IEnumerator AnimateFade(float startAlpha, float endAlpha, float duration, float delayBeforeFade)
     {
+        GetObjects();
         fadeImage.enabled = true;
         canvasGroup.alpha = startAlpha;
         yield return null; //frame plays before continuing

@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Cutscenes/CutsceneEnd.unity
     guid: a74698c5821ec9d408baefb0f5741605
+  - enabled: 1
+    path: Assets/Scenes/WinScreen.unity
+    guid: 12187e35be22d1b4ab1d3f9d85450477
   - enabled: 0
     path: Assets/Scenes/EnemyAI/EnemyAI.unity
     guid: 03a31c6e8761e0f41b7f204e97c52d78

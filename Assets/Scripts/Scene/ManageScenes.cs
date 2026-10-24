@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -65,11 +66,11 @@ public class ManageScenes : MonoBehaviour
         yield return new WaitForSeconds(1);
     }
 
-    /*public void LoadCutScene()
+    public IEnumerator LoadCutScene()
     {
         FadeManager.Instance.DoFade(0,1,1,0);
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         FadeManager.Instance.DoFade(1,0,1,0);
-    }*/
+    }
 }
