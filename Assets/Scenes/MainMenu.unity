@@ -5385,7 +5385,7 @@ GameObject:
   - component: {fileID: 796442114}
   - component: {fileID: 796442113}
   m_Layer: 5
-  m_Name: THE BIG
+  m_Name: Title1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5432,7 +5432,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.22916794
       value: 0
       inSlope: 2
       outSlope: 2
@@ -5440,33 +5440,6 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - serializedVersion: 3
-      time: 0.32951698
-      value: 0.49597248
-      inSlope: -0.00044297587
-      outSlope: -0.00044297587
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.8308947
-    - serializedVersion: 3
-      time: 0.49780774
-      value: 0.496126
-      inSlope: 0.0058193207
-      outSlope: 0.0058193207
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.56706727
-      outWeight: 0.51098114
-    - serializedVersion: 3
-      time: 0.6046323
-      value: 0.5022738
-      inSlope: 0.1859989
-      outSlope: 0.1859989
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.57083213
-      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
@@ -5499,7 +5472,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: THE BIG
+  m_text: Thief's Gotta
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3e96b11d0278e2e4d9bd7c61491bcd68, type: 2}
   m_sharedMaterial: {fileID: 6573086367692012221, guid: 3e96b11d0278e2e4d9bd7c61491bcd68, type: 2}
@@ -11174,7 +11147,7 @@ GameObject:
   - component: {fileID: 1634434974}
   - component: {fileID: 1634434973}
   m_Layer: 5
-  m_Name: STEAL
+  m_Name: Title2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11196,7 +11169,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -81.2, y: 12.1}
+  m_AnchoredPosition: {x: -119.5, y: 12.1}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1634434973
@@ -11212,8 +11185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScreenTransition
   offScreenStart: {x: 500, y: 12.1}
-  centerScreen: {x: -81.2, y: 12.1}
-  offScreenEnd: {x: -81.2, y: 12.1}
+  centerScreen: {x: -119.5, y: 12.1}
+  offScreenEnd: {x: -119.5, y: 12.1}
   startDelay: 14.5
   totalDuration: 3
   movementCurve: 0
@@ -11221,7 +11194,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.3
       value: 0
       inSlope: 2
       outSlope: 2
@@ -11229,24 +11202,6 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - serializedVersion: 3
-      time: 0.3906742
-      value: 0.49597248
-      inSlope: -0.00044297587
-      outSlope: -0.00044297587
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.8308947
-    - serializedVersion: 3
-      time: 0.49780774
-      value: 0.496126
-      inSlope: 0.0058193207
-      outSlope: 0.0058193207
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.56706727
-      outWeight: 0.51098114
     - serializedVersion: 3
       time: 1
       value: 1
@@ -11279,7 +11234,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: STEAL
+  m_text: EAT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3e96b11d0278e2e4d9bd7c61491bcd68, type: 2}
   m_sharedMaterial: {fileID: 6573086367692012221, guid: 3e96b11d0278e2e4d9bd7c61491bcd68, type: 2}
@@ -11306,8 +11261,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38.5
-  m_fontSizeBase: 38.5
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

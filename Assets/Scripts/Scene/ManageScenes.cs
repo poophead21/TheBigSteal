@@ -21,6 +21,11 @@ public class ManageScenes : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(2);
+    }
+
     public void ReloadScene()
     {
         Scene currentScene = SceneManager.GetActiveScene();
