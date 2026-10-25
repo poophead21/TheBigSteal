@@ -21,8 +21,6 @@ public class Sandwich : Interactable
     {
         Debug.Log("Sandwich interacted");
         ManageScenes.Instance.LoadNextLevel();
-
-        //StartCoroutine(EndSequence());
     }
 
     private IEnumerator EndSequence()

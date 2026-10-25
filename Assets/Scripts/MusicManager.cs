@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(AudioSource))]
@@ -64,6 +66,11 @@ public class MusicManager : MonoBehaviour
         nonActiveSource = chaseAudioSource;
     }
 
+    private void Start()
+    {
+        CheckWinMusic();
+    }
+
     public void ReportChaseState(bool isChasing)
     {
         if (isChasing)
@@ -88,6 +95,14 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+    private void CheckWinMusic()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        if (currentSceneIndex == 5)
+        {
+            PlayWinMusic();
+        }
+    }
     public void PlayWinMusic()
     {
         StopMusic();
