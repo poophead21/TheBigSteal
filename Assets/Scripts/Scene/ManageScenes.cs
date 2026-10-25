@@ -10,6 +10,9 @@ public class ManageScenes : MonoBehaviour
     [Tooltip("Delay in seconds before loading a scene after a button click.")]
     public float loadDelay = 1.0f;
 
+    private GameObject fadeCanvas;
+    private FadeManager fadeManager;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -24,6 +27,12 @@ public class ManageScenes : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        fadeCanvas = GameObject.FindWithTag("FadeCanvas");
+        fadeManager =  fadeCanvas.GetComponent<FadeManager>();
+        
+    }
     // --- Public UI Button Callbacks ---
 
     public void RestartGame()
@@ -61,25 +70,25 @@ public class ManageScenes : MonoBehaviour
 
     private IEnumerator LoadSceneWithDelay(int buildIndex)
     {
-        if (FadeManager.Instance != null)
+        if (fadeManager != null)
         {
-            FadeManager.Instance.DoFade(0, 1, loadDelay, 0);
+            fadeManager.DoFade(0, 1, loadDelay, 0);
         }
 
         yield return new WaitForSeconds(loadDelay);
         SceneManager.LoadScene(buildIndex);
 
-        if (FadeManager.Instance != null)
+        if (fadeManager != null)
         {
-            FadeManager.Instance.DoFade(1, 0, 1, 0);
+            fadeManager.DoFade(1, 0, 1, 0);
         }
     }
 
     private IEnumerator ExitWithDelay()
     {
-        if (FadeManager.Instance != null)
+        if (fadeManager != null)
         {
-            FadeManager.Instance.DoFade(0, 1, loadDelay, 0);
+            fadeManager.DoFade(0, 1, loadDelay, 0);
         }
 
         yield return new WaitForSeconds(loadDelay);
@@ -88,20 +97,17 @@ public class ManageScenes : MonoBehaviour
 
     private IEnumerator FadeOutThenLoadNewScene()
     {
-        yield return FadeOut();
+        Debug.Log("FadeOutThenLoadNewScene");
+        fadeManager.DoFade(0, 1, 1, 0);
+        yield return new WaitForSeconds(1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-
-        if (FadeManager.Instance != null)
-        {
-            FadeManager.Instance.DoFade(1, 0, 1, 0);
-        }
     }
 
     private IEnumerator FadeOut()
     {
-        if (FadeManager.Instance != null)
+        if (fadeManager != null)
         {
-            FadeManager.Instance.DoFade(0, 1, loadDelay, 0);
+            fadeManager.DoFade(0, 1, loadDelay, 0);
         }
 
         yield return new WaitForSeconds(loadDelay);
@@ -109,9 +115,9 @@ public class ManageScenes : MonoBehaviour
     
     public IEnumerator LoadCutScene()
     {
-        FadeManager.Instance.DoFade(0,1,1,0);
+        fadeManager.DoFade(0,1,1,0);
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        FadeManager.Instance.DoFade(1,0,1,0);
+        fadeManager.DoFade(1,0,1,0);
     }
 }

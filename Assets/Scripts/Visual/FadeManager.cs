@@ -19,7 +19,7 @@ public class FadeManager : MonoBehaviour
     [SerializeField] private float fadeDuration;
     [SerializeField] private float fadeDelayBeforeFade;
 
-    private void Awake()
+    /*private void Awake()
     { 
         if (Instance == null) 
         {
@@ -32,38 +32,36 @@ public class FadeManager : MonoBehaviour
             
         } 
         DontDestroyOnLoad(gameObject);
-    }
+    }*/
 
+    private void Awake()
+    {
+        fadeImage = GetComponent<Image>();
+        canvasGroup = GetComponent<CanvasGroup>();
+    }
     private void Start()
     {
-        GetObjects();
         if (automaticallyFadeInOnSceneLoad)
         {
             Debug.Log("Start fade");
             DoFade(fadeStartAlpha, fadeEndAlpha, fadeDuration, fadeDelayBeforeFade);
         }
     }
-
-    private void GetObjects()
-    {
-        //fadeCanvas = GameObject.FindWithTag("FadeCanvas");
-        fadeImage = GetComponent<Image>();
-        canvasGroup = GetComponent<CanvasGroup>();
-    }
     
     public void DoFade(float startAlpha, float endAlpha, float duration, float delayBeforeFade)
     {
-        GetObjects();
+        Debug.Log("DoFade");
         if (canvasGroup == null)
         {
             return;
         }
+
+        Debug.Log("AnimateFade");
         StartCoroutine(AnimateFade(startAlpha, endAlpha, duration, delayBeforeFade));
     }
 
     private IEnumerator AnimateFade(float startAlpha, float endAlpha, float duration, float delayBeforeFade)
     {
-        GetObjects();
         fadeImage.enabled = true;
         canvasGroup.alpha = startAlpha;
         yield return null; //frame plays before continuing
