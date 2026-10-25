@@ -21765,6 +21765,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4248096300411496127, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4709010191775353540, guid: 62d9970897c2c9642b6f6e7ff4e52331, type: 3}
       propertyPath: m_Name
       value: 'IRIS SHOT '

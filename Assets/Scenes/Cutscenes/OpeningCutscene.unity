@@ -17206,7 +17206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd4d97dbb732fd041927832a7375d38f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueTyper
-  textToShow: Finally, after months of preperation...I'm ready.
+  textToShow: Finally, after months of preparation...I'm ready.
 --- !u!114 &1313543412
 MonoBehaviour:
   m_ObjectHideFlags: 0
