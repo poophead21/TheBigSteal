@@ -41,7 +41,6 @@ public class Door : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerController.isMovingForCutscene = false;
-            //playerController.isMoving = false;
             Debug.Log("door entered");
             StartCoroutine(OpenAndLoadNextLevel(other.gameObject));
         }
