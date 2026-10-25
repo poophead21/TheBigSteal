@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     private CharacterController _characterController;
     private Animator _animator;
     private AudioManager _audioManager;
+
+    public bool isMovingForCutscene = true;
     
     [SerializeField] private float interactDistance = 2.0f;
     
@@ -100,8 +102,12 @@ public class PlayerController : MonoBehaviour
 
     private void ApplyTotalVelocity()
     {
-        var totalVelocity = movement + verticalVelocity * Vector3.up;
-        _characterController.Move(totalVelocity * Time.deltaTime);
+        if (isMovingForCutscene)
+        {
+            var totalVelocity = movement + verticalVelocity * Vector3.up;
+            _characterController.Move(totalVelocity * Time.deltaTime);
+            
+        }
     }
 
 

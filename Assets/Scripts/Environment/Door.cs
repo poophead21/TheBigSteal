@@ -9,9 +9,13 @@ public class Door : MonoBehaviour
 
     private Animation _animation;
     private AudioManager audioManager;
+    private GameObject _player;
+    private PlayerController playerController;
 
     private void Start()
     {
+        _player = GameObject.FindWithTag("Player");
+        playerController = _player.GetComponent<PlayerController>();
         _animation = GetComponent<Animation>();
         audioManager = GameObject.Find("SoundManager").GetComponent<AudioManager>();
     }
@@ -36,6 +40,8 @@ public class Door : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            playerController.isMovingForCutscene = false;
+            //playerController.isMoving = false;
             Debug.Log("door entered");
             StartCoroutine(OpenAndLoadNextLevel(other.gameObject));
         }
@@ -52,6 +58,7 @@ public class Door : MonoBehaviour
 
         OpenDoor();
         yield return new WaitForSeconds(0.5f);
+        //playerController.isMoving = true;
         ManageScenes.Instance.LoadNextLevel();
     }
 }
