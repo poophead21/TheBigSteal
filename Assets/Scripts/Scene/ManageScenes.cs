@@ -33,6 +33,7 @@ public class ManageScenes : MonoBehaviour
         fadeManager =  fadeCanvas.GetComponent<FadeManager>();
         
     }
+
     // --- Public UI Button Callbacks ---
 
     public void RestartGame()
