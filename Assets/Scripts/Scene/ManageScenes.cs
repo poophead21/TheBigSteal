@@ -29,13 +29,19 @@ public class ManageScenes : MonoBehaviour
 
     private void Start()
     {
-        fadeCanvas = GameObject.FindWithTag("FadeCanvas");
-        fadeManager =  fadeCanvas.GetComponent<FadeManager>();
-        
+        GetFadeObjects();
     }
+
+    private void GetFadeObjects()
+    {
+        fadeCanvas = GameObject.FindWithTag("FadeCanvas");
+        fadeManager = fadeCanvas.GetComponent<FadeManager>();
+    }
+
 
     private void Update()
     {
+        GetFadeObjects();
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -78,6 +84,7 @@ public class ManageScenes : MonoBehaviour
 
     private IEnumerator LoadSceneWithDelay(int buildIndex)
     {
+        GetFadeObjects();
         if (fadeManager != null)
         {
             fadeManager.DoFade(0, 1, loadDelay, 0);
@@ -94,6 +101,7 @@ public class ManageScenes : MonoBehaviour
 
     private IEnumerator ExitWithDelay()
     {
+        GetFadeObjects();
         if (fadeManager != null)
         {
             fadeManager.DoFade(0, 1, loadDelay, 0);
@@ -113,6 +121,7 @@ public class ManageScenes : MonoBehaviour
 
     private IEnumerator FadeOut()
     {
+        GetFadeObjects();
         if (fadeManager != null)
         {
             fadeManager.DoFade(0, 1, loadDelay, 0);
@@ -123,6 +132,7 @@ public class ManageScenes : MonoBehaviour
     
     public IEnumerator LoadCutScene()
     {
+
         fadeManager.DoFade(0,1,1,0);
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
