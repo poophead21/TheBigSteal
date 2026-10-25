@@ -33,14 +33,11 @@ public class DialogueTyper : MonoBehaviour
         SetText(textToShow);
     }
 
-    private void Start()
-    {
-        //SetText(testText);
-    }
-
     private void SetText(string text)
     {
         textBox.text = text;
+        textBox.ForceMeshUpdate();
+        
         textBox.maxVisibleCharacters = 0;
         currentVisibleCharacterIndex = 0;
 
@@ -51,7 +48,7 @@ public class DialogueTyper : MonoBehaviour
     {
         TMP_TextInfo textInfo = textBox.textInfo;
 
-        while (currentVisibleCharacterIndex < textInfo.characterCount + 1)
+        while (currentVisibleCharacterIndex < textInfo.characterCount)
         {
             char character = textInfo.characterInfo[currentVisibleCharacterIndex].character;
             textBox.maxVisibleCharacters++;
