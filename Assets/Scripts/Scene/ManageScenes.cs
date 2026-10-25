@@ -33,6 +33,14 @@ public class ManageScenes : MonoBehaviour
         fadeManager =  fadeCanvas.GetComponent<FadeManager>();
         
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
     // --- Public UI Button Callbacks ---
 
     public void RestartGame()
