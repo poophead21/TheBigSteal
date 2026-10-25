@@ -4,6 +4,7 @@ public class Mirror : LightEmitter, ILightReceiver
 {
     private Vector3 incomingLightDirection;
     private bool isReceivingLight = false;
+    //[SerializeField] private bool isEmitting = false;
     
     private Mirror()
     {
