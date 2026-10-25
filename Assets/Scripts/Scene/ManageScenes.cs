@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement;
 public class ManageScenes : MonoBehaviour
 {
     public static ManageScenes Instance;
-    
 
+    [Header("Transition Settings")]
+    [Tooltip("Delay in seconds before loading a scene after a button click.")]
+    public float loadDelay = 1.0f;
 
     private void Awake()
     {
@@ -17,59 +19,91 @@ public class ManageScenes : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
         DontDestroyOnLoad(gameObject);
     }
 
+    // --- Public UI Button Callbacks ---
+
     public void RestartGame()
     {
-        SceneManager.LoadScene(2);
+        StartCoroutine(LoadSceneWithDelay(2));
     }
 
     public void ReloadScene()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.buildIndex);
+        int currentBuildIndex = SceneManager.GetActiveScene().buildIndex;
+        StartCoroutine(LoadSceneWithDelay(currentBuildIndex));
     }
 
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
+        StartCoroutine(LoadSceneWithDelay(0));
     }
 
     public void ExitGame()
     {
-        Application.Quit();
+        StartCoroutine(ExitWithDelay());
     }
 
     public void LoadNextLevel()
     {
         StartCoroutine(FadeOutThenLoadNewScene());
     }
-    
+
     public void UnloadLevel()
     {
         StartCoroutine(FadeOut());
+    }
+
+    // --- Coroutines & Helper Methods ---
+
+    private IEnumerator LoadSceneWithDelay(int buildIndex)
+    {
+        if (FadeManager.Instance != null)
+        {
+            FadeManager.Instance.DoFade(0, 1, loadDelay, 0);
+        }
+
+        yield return new WaitForSeconds(loadDelay);
+        SceneManager.LoadScene(buildIndex);
+
+        if (FadeManager.Instance != null)
+        {
+            FadeManager.Instance.DoFade(1, 0, 1, 0);
+        }
+    }
+
+    private IEnumerator ExitWithDelay()
+    {
+        if (FadeManager.Instance != null)
+        {
+            FadeManager.Instance.DoFade(0, 1, loadDelay, 0);
+        }
+
+        yield return new WaitForSeconds(loadDelay);
+        Application.Quit();
     }
 
     private IEnumerator FadeOutThenLoadNewScene()
     {
         yield return FadeOut();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        FadeManager.Instance.DoFade(1,0,1,0);
-    }
-    
-    private IEnumerator FadeOut()
-    {
-        FadeManager.Instance.DoFade(0,1,1,0);
-        yield return new WaitForSeconds(1);
+
+        if (FadeManager.Instance != null)
+        {
+            FadeManager.Instance.DoFade(1, 0, 1, 0);
+        }
     }
 
-    /*public void LoadCutScene()
+    private IEnumerator FadeOut()
     {
-        FadeManager.Instance.DoFade(0,1,1,0);
-        yield return new WaitForSeconds(1);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        FadeManager.Instance.DoFade(1,0,1,0);
-    }*/
+        if (FadeManager.Instance != null)
+        {
+            FadeManager.Instance.DoFade(0, 1, loadDelay, 0);
+        }
+
+        yield return new WaitForSeconds(loadDelay);
+    }
 }

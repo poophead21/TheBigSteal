@@ -6,13 +6,13 @@ using UnityEngine.SceneManagement;
 public class Door : MonoBehaviour
 {
     bool open = false;
-    
+
     private Animation _animation;
     private AudioManager audioManager;
 
     private void Start()
     {
-        _animation  = GetComponent<Animation>();
+        _animation = GetComponent<Animation>();
         audioManager = GameObject.Find("SoundManager").GetComponent<AudioManager>();
     }
 
@@ -23,7 +23,7 @@ public class Door : MonoBehaviour
         _animation.Play("DoorOpen");
         audioManager.PlayAudioClip(Sound.DoorOpen);
     }
-    
+
     public void CloseDoor()
     {
         if (!open) return;
@@ -37,7 +37,21 @@ public class Door : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("door entered");
-            ManageScenes.Instance.LoadNextLevel();
+            StartCoroutine(OpenAndLoadNextLevel(other.gameObject));
         }
+    }
+
+    private IEnumerator OpenAndLoadNextLevel(GameObject player)
+    {
+        // Disable player movement control
+        CharacterController controller = player.GetComponent<CharacterController>();
+        if (controller != null)
+        {
+            controller.enabled = false;
+        }
+
+        OpenDoor();
+        yield return new WaitForSeconds(0.5f);
+        ManageScenes.Instance.LoadNextLevel();
     }
 }
