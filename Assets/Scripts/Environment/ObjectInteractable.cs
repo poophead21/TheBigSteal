@@ -171,7 +171,9 @@ public class ObjectInteractable : Interactable
         
         Vector3 direction = DeterminePushingDirection(playerToObject);
         // assuming the collider is centered and square on the xz plane
-        Vector3 origin = transform.position + (_collider.size.x / 2.0f * transform.localScale.x + EPSILON) * direction; 
+        Vector3 origin = transform.position + (_collider.size.x / 2.0f * transform.localScale.x + EPSILON) * direction;
+        origin.y += 1;
+        Debug.Log(origin);
         
         bool hit = Physics.Raycast(origin, direction, moveDistance - 2 * EPSILON);
         return !hit;
