@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5066431442158470440}
   - component: {fileID: 2029322586884296941}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ Transform:
   m_GameObject: {fileID: 2326428078722711232}
   serializedVersion: 2
   m_LocalRotation: {x: 0.49267375, y: 0.49267372, z: -0.5072204, w: 0.50722057}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 12.1, z: -0.007}
   m_LocalScale: {x: 3.0993037, y: 2.357911, z: 20.51923}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -327,7 +327,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 2, y: 3, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1.12, z: 0}
 --- !u!1 &6074711454164074656
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,6 +511,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5f5ac1af33161f741a35049a023afe8f, type: 3}
       propertyPath: m_Name
       value: Table
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5f5ac1af33161f741a35049a023afe8f, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
