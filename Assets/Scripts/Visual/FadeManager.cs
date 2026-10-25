@@ -46,9 +46,9 @@ public class FadeManager : MonoBehaviour
 
     private void GetObjects()
     {
-        fadeCanvas = GameObject.FindWithTag("FadeCanvas");
-        fadeImage = fadeCanvas.GetComponent<Image>();
-        canvasGroup = fadeCanvas.GetComponent<CanvasGroup>();
+        //fadeCanvas = GameObject.FindWithTag("FadeCanvas");
+        fadeImage = GetComponent<Image>();
+        canvasGroup = GetComponent<CanvasGroup>();
     }
     
     public void DoFade(float startAlpha, float endAlpha, float duration, float delayBeforeFade)

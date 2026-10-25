@@ -106,4 +106,12 @@ public class ManageScenes : MonoBehaviour
 
         yield return new WaitForSeconds(loadDelay);
     }
+    
+    public IEnumerator LoadCutScene()
+    {
+        FadeManager.Instance.DoFade(0,1,1,0);
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        FadeManager.Instance.DoFade(1,0,1,0);
+    }
 }

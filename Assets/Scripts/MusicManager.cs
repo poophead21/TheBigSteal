@@ -98,7 +98,7 @@ public class MusicManager : MonoBehaviour
     private void CheckWinMusic()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        if (currentSceneIndex == 5)
+        if (currentSceneIndex == 6)
         {
             PlayWinMusic();
         }
